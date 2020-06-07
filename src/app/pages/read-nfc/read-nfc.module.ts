@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReadNfcPageRoutingModule } from './read-nfc-routing.module';
 
 import { ReadNfcPage } from './read-nfc.page';
+import { NFC, Ndef } from "@ionic-native/nfc/ngx";
 
 @NgModule({
   imports: [
@@ -15,6 +16,10 @@ import { ReadNfcPage } from './read-nfc.page';
     IonicModule,
     ReadNfcPageRoutingModule
   ],
-  declarations: [ReadNfcPage]
+  declarations: [ReadNfcPage],
+  providers: [
+    NFC,
+    Ndef
+  ]
 })
 export class ReadNfcPageModule {}

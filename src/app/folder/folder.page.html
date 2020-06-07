@@ -26,7 +26,10 @@
       </ion-card-header>
 
       <ion-card-content>
-        <ion-input placeholder="PPKK89"></ion-input>
+        <ion-input  type="text"
+                    [ngModel]="ccia" (ngModelChange)="ccia = $event.toLocaleUpperCase()"
+                    (ionChange)="patenteOnChange($event)"
+                    placeholder="PPKK89"></ion-input>
       </ion-card-content>
     </ion-card>
     <ion-button (click)="goToReadNfc()" 

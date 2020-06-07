@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 /* Agregadas */
-import { Router } from '@angular/router';
+import { Router, NavigationExtras  } from '@angular/router';
 
 @Component({
   selector: 'app-folder',
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class FolderPage implements OnInit {
   public folder: string;
+  private patente: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -20,8 +21,20 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
-  goToReadNfc(){
-    this.router.navigate(['/read-nfc']);
+  goToReadNfc(){    
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        patente: this.patente
+      }
+    };
+    this.router.navigate(['/read-nfc'], navigationExtras);
   }
+
+  patenteOnChange(e){
+    console.log(e.detail.value);
+    this.patente = e.detail.value;
+  }
+
+ 
 
 }

@@ -15,11 +15,15 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-input placeholder="Numero de serie"></ion-input>
+      <ion-lis>
+        <ion-item *ngFor="let codigo of nfcDefaults">
+          <ion-label>{{codigo}}</ion-label>
+        </ion-item>
+      </ion-lis>
     </ion-card-content>
   </ion-card>
   <ion-button (click)="readNfc()" 
-              color="primary">Leer</ion-button>
+              color="primary">Forzar Lectura</ion-button>
 
     <ion-button (click)="goToList()" 
                 color="primary">Finalizar</ion-button>
