@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+/* Agregadas */
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
@@ -9,10 +12,16 @@ import { ActivatedRoute } from '@angular/router';
 export class FolderPage implements OnInit {
   public folder: string;
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+  }
+
+  goToReadNfc(){
+    this.router.navigate(['/read-nfc']);
   }
 
 }

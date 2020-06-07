@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ReadNfc</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Acerque NFC</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-input placeholder="Numero de serie"></ion-input>
+    </ion-card-content>
+  </ion-card>
+  <ion-button (click)="readNfc()" 
+              color="primary">Leer</ion-button>
+
+    <ion-button (click)="goToList()" 
+                color="primary">Finalizar</ion-button>
+
+</ion-content>

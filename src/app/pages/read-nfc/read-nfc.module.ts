@@ -4,26 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { FolderPageRoutingModule } from './folder-routing.module';
+import { ReadNfcPageRoutingModule } from './read-nfc-routing.module';
 
-import { FolderPage } from './folder.page';
-
-
+import { ReadNfcPage } from './read-nfc.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FolderPageRoutingModule
+    ReadNfcPageRoutingModule
   ],
-  declarations: [FolderPage]
+  declarations: [ReadNfcPage]
 })
-export class FolderPageModule {
-
-  constructor() {
-
-  }
-
-
-}
+export class ReadNfcPageModule {}

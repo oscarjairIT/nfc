@@ -1,5 +1,7 @@
 {
   "name": "cuarentenaAPP",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

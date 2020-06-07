@@ -10,6 +10,14 @@ const routes: Routes = [
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+  },
+  {
+    path: 'read-nfc',
+    loadChildren: () => import('./pages/read-nfc/read-nfc.module').then( m => m.ReadNfcPageModule)
+  },
+  {
+    path: 'list',
+    loadChildren: () => import('./pages/list/list.module').then( m => m.ListPageModule)
   }
 ];
 
