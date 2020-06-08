@@ -8,5 +8,23 @@
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Viaje en vehiculo:</ion-card-subtitle>
+      <ion-card-title>{{title}}</ion-card-title>
+    </ion-card-header>
 
+    <ion-list>
+      <ion-item *ngFor="let codigo of listNFCs">
+        <ion-label>{{codigo}}</ion-label>
+      </ion-item>
+    </ion-list>
+    
+  </ion-card>
+
+  <ion-button (click)="goToInicio()" 
+  color="danger">Cancelar</ion-button>
+
+  <ion-button (click)="saveViaje()" 
+      color="primary">Enviar</ion-button>
 </ion-content>

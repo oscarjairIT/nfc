@@ -15,15 +15,18 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-lis>
-        <ion-item *ngFor="let codigo of nfcDefaults">
+      <ion-list>
+        <ion-item *ngFor="let codigo of listNFCs">
           <ion-label>{{codigo}}</ion-label>
+          <ion-button  color="danger" (click)="deleteItem(codigo)">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
         </ion-item>
-      </ion-lis>
+      </ion-list>
     </ion-card-content>
   </ion-card>
   <ion-button (click)="readNfc()" 
-              color="primary">Forzar Lectura</ion-button>
+              color="warning">Forzar Lectura</ion-button>
 
     <ion-button (click)="goToList()" 
                 color="primary">Finalizar</ion-button>

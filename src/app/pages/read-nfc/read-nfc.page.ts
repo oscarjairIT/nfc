@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 /* Agregadas */
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
+import { Viaje } from './../../models/viaje';
 
 @Component({
   selector: 'app-read-nfc',
@@ -16,8 +17,10 @@ export class ReadNfcPage implements OnInit {
   RFIDDATA3: string;
   NFCREAD: any;
 
-  nfcDefaults = ["VACIO1", "VACIO2"]
-  data: any;
+  nfcDefaults = ["VACIO1", "VACIO2"] //para pruebas
+  listNFCs: string[] = ["VACIO1", "VACIO2", "VACIO1", "VACIO2","VACIO1", "VACIO2","VACIO1", "VACIO2"];
+  patente: string;
+  viaje: Viaje = new Viaje();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -26,10 +29,12 @@ export class ReadNfcPage implements OnInit {
     private ndef: Ndef
   ) { 
     this.activatedRoute.queryParams.subscribe(params => {
-      console.log("params: ",params);
-      if (params && params.special){
-        this.data = params.patente;
+      // console.log("params: ",params);
+      if (params){
+        this.patente = params.patente;
       }
+      // console.log("constructor ",this.patente);
+      
     });
   }
 
@@ -43,9 +48,29 @@ export class ReadNfcPage implements OnInit {
   }
 
   goToList(){
-    this.router.navigate(['/list']);
+    this.viaje.patente = this.patente;
+    this.viaje.numerosDeSerie = this.listNFCs;
+    // console.log("goToList ",this.patente);
+    
+    // console.log("Origen: ",this.viaje);
+    
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        viaje: JSON.stringify(this.viaje)
+      }
+    };
+    this.router.navigate(['/list'], navigationExtras);
   }
 
+  deleteItem(item) {
+    let index = this.listNFCs.indexOf(item);
+
+    if(index > -1){
+      this.listNFCs.splice(index, 1);
+    }
+  }
+
+  /*no funka */
   listeningNfc2(){
     this.nfc.addNdefListener(() => {
       console.log('successfully attached ndef listener');
@@ -75,16 +100,21 @@ export class ReadNfcPage implements OnInit {
     
     this.nfc.addTagDiscoveredListener().subscribe(event => {
       /*LOGS */
-      console.log('Tag detected: ' + JSON.stringify(event));
-      console.log('received ndef message. the tag contains: ', event.tag);
+      // console.log('Tag detected: ' + JSON.stringify(event));
+      // console.log('received ndef message. the tag contains: ', event.tag);
       console.log('numero de serie', this.nfc.bytesToHexString(event.tag.id));
       /*Variables */
       this.RFIDDATA1 = 'Tag detected: ' + JSON.stringify(event)
       this.RFIDDATA2 = 'received ndef message. the tag contains: ', event.tag
-      this.RFIDDATA3= 'numero de serie', this.nfc.bytesToHexString(event.tag.id)
+      // this.RFIDDATA3= 'numero de serie', this.nfc.bytesToHexString(event.tag.id)
+      this.RFIDDATA3= this.nfc.bytesToHexString(event.tag.id)
+
+      /*Agregando a la Lista */
+      this.listNFCs.push(this.RFIDDATA3);
+
       let a = event.tag.id;
       a.reverse();
-      console.log('tag publico: ', parseInt(this.nfc.bytesToHexString(a), 16));
+      // console.log('tag publico: ', parseInt(this.nfc.bytesToHexString(a), 16));
       a = parseInt(this.nfc.bytesToHexString(a), 16)
       this.NFCREAD = event
     })
