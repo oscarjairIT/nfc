@@ -24,6 +24,16 @@ export class FolderPage implements OnInit {
     private authService: AuthService
     ) { }
 
+  ionViewWillEnter() {
+      this.authService.getToken().then(() => {
+        if(!this.authService.isLoggedIn) {
+          // this.navCtrl.navigateRoot('/dashboard');
+          console.log("no está logeado, mandando a login");
+          this.router.navigate(['/login']);
+        }
+      });
+  }
+
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     // this.service.getGet();
@@ -32,7 +42,7 @@ export class FolderPage implements OnInit {
 
   goToReadNfc(){    
     // this.service.getGet();
-    this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
+    // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
     let navigationExtras: NavigationExtras = {
       queryParams: {
         patente: this.patente

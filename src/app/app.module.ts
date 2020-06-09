@@ -12,6 +12,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP } from '@ionic-native/http/ngx';
 import { SharedService } from './services/shared.service';
 import { HttpClientModule } from '@angular/common/http';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { AuthService } from './services/auth.service';
+import { AlertService } from './services/alert.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +29,10 @@ import { HttpClientModule } from '@angular/common/http';
     StatusBar,
     SplashScreen,
     SharedService,
+    AuthService,
+    AlertService,
     HTTP,
+    NativeStorage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
