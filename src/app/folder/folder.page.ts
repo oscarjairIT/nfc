@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router, NavigationExtras  } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
 import { SharedService } from '../services/shared.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-folder',
@@ -19,16 +20,19 @@ export class FolderPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private themeService: ThemeService,
-    private service: SharedService
+    private service: SharedService,
+    private authService: AuthService
     ) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.service.getGet();
+    // this.service.getGet();
+    // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
   }
 
   goToReadNfc(){    
-    this.service.getGet();
+    // this.service.getGet();
+    this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
     let navigationExtras: NavigationExtras = {
       queryParams: {
         patente: this.patente

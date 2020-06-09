@@ -10,7 +10,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 })
 export class SharedService {
 
-  api = "http://34.68.226.176:3000/"
+  API_URL_BASE = "http://34.68.226.176:3000/"
 
   public header: any;
   public host: any;
@@ -31,7 +31,7 @@ export class SharedService {
     console.log("servicio sending");
     
     // this.http.get(this.api + "test", {}, this.options)
-    this.http.get(this.api + "test", {}, {"Authorization":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1OTE2OTE3OTB9.W3XuEKwu22OdpWQmrxM7WZvTSgttRQwjrnHzXn1ADdo"})
+    this.http.get(this.API_URL_BASE + "test", {}, {"Authorization":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1OTE2OTE3OTB9.W3XuEKwu22OdpWQmrxM7WZvTSgttRQwjrnHzXn1ADdo"})
       .then(data => {
 
         console.log(data.status);
