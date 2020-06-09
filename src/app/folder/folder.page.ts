@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 /* Agregadas */
 import { Router, NavigationExtras  } from '@angular/router';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-folder',
@@ -15,7 +16,9 @@ export class FolderPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private themeService: ThemeService
+    ) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
@@ -35,6 +38,8 @@ export class FolderPage implements OnInit {
     this.patente = e.detail.value;
   }
 
- 
+  toogleDarkMode(){
+    this.themeService.toogleAppTheme();
+  }
 
 }

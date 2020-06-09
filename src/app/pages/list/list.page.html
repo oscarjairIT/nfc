@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="true">
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Viaje en vehiculo:</ion-card-subtitle>
@@ -22,9 +22,15 @@
     
   </ion-card>
 
-  <ion-button (click)="goToInicio()" 
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full"
+  (click)="goToInicio()" 
   color="danger">Cancelar</ion-button>
 
-  <ion-button (click)="saveViaje()" 
-      color="primary">Enviar</ion-button>
-</ion-content>
+<ion-button expand="full"
+  (click)="saveViaje()" 
+  color="primary">Enviar</ion-button>
+</ion-footer>

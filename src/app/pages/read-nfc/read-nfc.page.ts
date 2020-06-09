@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 
 /* Agregadas */
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { Viaje } from './../../models/viaje';
+import { IonInfiniteScroll } from '@ionic/angular';
 
 @Component({
   selector: 'app-read-nfc',
@@ -11,6 +12,7 @@ import { Viaje } from './../../models/viaje';
   styleUrls: ['./read-nfc.page.scss'],
 })
 export class ReadNfcPage implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   RFIDDATA1: string;
   RFIDDATA2: string;
@@ -18,7 +20,7 @@ export class ReadNfcPage implements OnInit {
   NFCREAD: any;
 
   nfcDefaults = ["VACIO1", "VACIO2"] //para pruebas
-  listNFCs: string[] = ["VACIO1", "VACIO2", "VACIO1", "VACIO2","VACIO1", "VACIO2","VACIO1", "VACIO2"];
+  listNFCs: string[] = ["VACIO1", "VACIO2", "VACIO3", "VACIO4","VACIO5", "VACIO6","VACIO7", "VACIO8" , "VACIO9",  "VACIO10", "VACIO11", "VACIO12", "VACIO13"];
   patente: string;
   viaje: Viaje = new Viaje();
 
