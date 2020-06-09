@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 /* Agregadas */
 import { Router, NavigationExtras  } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'app-folder',
@@ -17,14 +18,17 @@ export class FolderPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private service: SharedService
     ) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.service.getGet();
   }
 
   goToReadNfc(){    
+    this.service.getGet();
     let navigationExtras: NavigationExtras = {
       queryParams: {
         patente: this.patente
