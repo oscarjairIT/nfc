@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { Viaje } from './../../models/viaje';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { ViajeService } from 'src/app/services/viaje.service';
 
 @Component({
   selector: 'app-read-nfc',
@@ -28,7 +29,8 @@ export class ReadNfcPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private nfc: NFC, 
-    private ndef: Ndef
+    private ndef: Ndef,
+    private viajeService: ViajeService
   ) { 
     this.activatedRoute.queryParams.subscribe(params => {
       // console.log("params: ",params);
@@ -42,6 +44,17 @@ export class ReadNfcPage implements OnInit {
 
   ngOnInit() {
     this.listeningNFC();
+
+    this.viajeService.createVehiculo('JJKK88').then(
+      resp => {
+        console.log("createVehiculo respuesta: ",resp);  
+      }
+    );
+    // this.viajeService.getVehiculoIDByPatente("PRUEBA1").then(
+    //   resp => {
+    //     console.log("getVehiculoIDByPatente respuesta: ", resp);  
+    //   }
+    // );
   }
 
   readNfc(){

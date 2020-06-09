@@ -6,6 +6,7 @@ import { Router, NavigationExtras  } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
 import { SharedService } from '../services/shared.service';
 import { AuthService } from '../services/auth.service';
+import { ViajeService } from '../services/viaje.service';
 
 @Component({
   selector: 'app-folder',
@@ -21,7 +22,8 @@ export class FolderPage implements OnInit {
     private router: Router,
     private themeService: ThemeService,
     private service: SharedService,
-    private authService: AuthService
+    private authService: AuthService,
+    private viajeService: ViajeService
     ) { }
 
   ionViewWillEnter() {
@@ -38,6 +40,7 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     // this.service.getGet();
     // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
+
   }
 
   goToReadNfc(){    

@@ -39,7 +39,14 @@ export class AuthService {
           console.log(response.data.message);
           this.token = response.data.access_token;
           console.log("token: ", this.token);
-          this.storage.setItem('token', this.token)
+
+          this.storage.setItem('token', this.token).then(
+            () => {
+              console.log('Token Stored');
+            },
+            error => console.error('Error storing item', error)
+          );
+
         } catch(e) {
           console.error('JSON parsing error');
         }
@@ -112,6 +119,8 @@ export class AuthService {
   getToken() {
     return this.storage.getItem('token').then(
       data => {
+        console.log("getToken: ", data);
+        
         this.token = data;
         if(this.token != null) {
           this.isLoggedIn=true;
@@ -124,6 +133,30 @@ export class AuthService {
         this.isLoggedIn=false;
       }
     );
+  }
+
+  async getTokenAsync():Promise<any>{
+
+    return new Promise((resolve) => {
+      this.storage.getItem('token').then(
+        data => {
+          console.log("getToken: ", data);
+        
+          this.token = data;
+          if(this.token != null) {
+            this.isLoggedIn=true;
+          } else {
+            this.isLoggedIn=false;
+          }
+          resolve(this.token);
+        }
+      ),
+      error => {
+        this.token = null;
+        this.isLoggedIn=false;
+        resolve(this.token);
+      }
+    });
   }
 
 }
