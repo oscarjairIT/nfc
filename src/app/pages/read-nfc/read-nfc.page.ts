@@ -45,11 +45,11 @@ export class ReadNfcPage implements OnInit {
   ngOnInit() {
     this.listeningNFC();
 
-    this.viajeService.createVehiculo('JJKK88').then(
-      resp => {
-        console.log("createVehiculo respuesta: ",resp);  
-      }
-    );
+    // this.viajeService.createVehiculo('JJKK88').then(
+    //   resp => {
+    //     console.log("createVehiculo respuesta: ",resp);  
+    //   }
+    // );
     // this.viajeService.getVehiculoIDByPatente("PRUEBA1").then(
     //   resp => {
     //     console.log("getVehiculoIDByPatente respuesta: ", resp);  

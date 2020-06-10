@@ -40,7 +40,7 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     // this.service.getGet();
     // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
-
+    this.toogleDarkMode();
   }
 
   goToReadNfc(){    

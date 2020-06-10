@@ -19,15 +19,6 @@ export class ViajeService {
     private alertService: AlertService,
     private authService: AuthService
   ) { 
-    // this.storage.getItem('token').then(
-    //   data => {
-    //     console.log("getToken in ViajeService: ", data);
-    //     this.token = data;
-    //   },
-    //   error => {
-    //     this.token = null;
-    //   }
-    // );
   }
 
   // patente: fdsdasdsa,
@@ -70,8 +61,8 @@ export class ViajeService {
 
       this.http.get(
         this.sharedService.API_URL_BASE + "vehiculosByPatente",
-        {patente: patente},
-        {"Authorization": this.token}
+        {'patente': patente},
+        {}
       ).then(response => {
         console.log(response);
         try {
@@ -92,23 +83,41 @@ export class ViajeService {
   }
 
   async createVehiculo(patente: string):Promise<any>{
-    // let token;
-    // this.authService.getToken().then(
-    //   resp => {
-    //     console.log("obteniendo token from createVehiculo");
-        
-    //     token = resp;
-    //   }
-    // )
-    // console.log("token: ", token);
-
+    console.log("patente antes de crearse: ", patente);
+    
     return new Promise( (resolve) => {
-
 
       this.http.post(
         this.sharedService.API_URL_BASE + "vehiculos",
         // {vehiculos :{patente: patente}},
-        {'patente': patente},
+        {'patente': patente, 'nfc':''},
+        // {"Content-Type": "application/json"}
+        {}
+      ).then(response => {
+        // console.log(response);
+        try {
+          response.data = JSON.parse(response.data);
+
+          console.log("create vehiculo: ",response.data);
+          
+        } catch (error) {
+          console.error('JSON parsing error');
+        }
+        resolve(response.data)
+      }).catch(response => {
+        console.log(response.status);
+        console.log(response.error);
+        resolve(response);
+      })
+    });
+  }
+
+  async createTarjeta(vehiculos_id: any, nfc:string):Promise<any>{
+    return new Promise( (resolve) => {
+      this.http.post(
+        this.sharedService.API_URL_BASE + "tarjetas",
+        // {vehiculos :{patente: patente}},
+        {'vehiculos_id': vehiculos_id, 'nfc': nfc},
         {"Content-Type": "application/json"}
       ).then(response => {
         // console.log(response);
