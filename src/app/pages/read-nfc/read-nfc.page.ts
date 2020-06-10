@@ -21,7 +21,8 @@ export class ReadNfcPage implements OnInit {
   NFCREAD: any;
 
   nfcDefaults = ["VACIO1", "VACIO2"] //para pruebas
-  listNFCs: string[] = ["VACIO1", "VACIO2", "VACIO3", "VACIO4","VACIO5", "VACIO6","VACIO7", "VACIO8" , "VACIO9",  "VACIO10", "VACIO11", "VACIO12", "VACIO13"];
+  // listNFCs: string[] = ["VACIO1", "VACIO2", "VACIO3", "VACIO4","VACIO5", "VACIO6","VACIO7", "VACIO8" , "VACIO9",  "VACIO10", "VACIO11", "VACIO12", "VACIO13"];
+  listNFCs: string[] = [];
   patente: string;
   viaje: Viaje = new Viaje();
 

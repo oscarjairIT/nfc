@@ -90,7 +90,7 @@ export class ViajeService {
       this.http.post(
         this.sharedService.API_URL_BASE + "vehiculos",
         // {vehiculos :{patente: patente}},
-        {'patente': patente, 'nfc':''},
+        {'patente': patente},
         // {"Content-Type": "application/json"}
         {}
       ).then(response => {

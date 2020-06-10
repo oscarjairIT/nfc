@@ -15,7 +15,7 @@ import { ViajeService } from '../services/viaje.service';
 })
 export class FolderPage implements OnInit {
   public folder: string;
-  private patente: string;
+  patente = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,6 +41,7 @@ export class FolderPage implements OnInit {
     // this.service.getGet();
     // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
     this.toogleDarkMode();
+    this.patente = '';
   }
 
   goToReadNfc(){    
