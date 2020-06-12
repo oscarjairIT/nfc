@@ -6,7 +6,7 @@ import { Platform } from '@ionic/angular';
 })
 export class ThemeService {
 
-  darkMode = false;
+  darkMode = true;
 
   constructor(
     private plt: Platform
@@ -20,7 +20,7 @@ export class ThemeService {
   }
 
   toogleAppTheme(){
-    this.darkMode = !this.darkMode;
+    // this.darkMode = !this.darkMode;
     this.setAppTheme(this.darkMode);
   }
 
