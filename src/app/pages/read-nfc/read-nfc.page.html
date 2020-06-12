@@ -7,49 +7,52 @@
 </ion-header>
 
 <ion-content fullscreen="true">
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Acerque NFC</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-
-      <ion-list>
-        <ion-item *ngFor="let codigo of listNFCs">
-          <ion-label>{{codigo}}</ion-label>
-          <ion-button  color="danger" (click)="deleteItem(codigo)">
-            <ion-icon name="close-circle-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-
-      <!-- <ion-content>
-        <ion-infinite-scroll>
-          <ion-infinite-scroll-content>
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-content> -->
-
-      <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-        <ion-infinite-scroll-content
-          loadingSpinner="bubbles"
-          loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll> -->
+  <br>
+  <ion-row>
+    <ion-col size="12">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Acerque NFC</ion-card-title>
+        </ion-card-header>
     
-
-    </ion-card-content>
-  </ion-card>
+        <ion-card-content>
+    
+          <ion-list>
+            <ion-item *ngFor="let codigo of listNFCs">
+              <ion-label>{{codigo}}</ion-label>
+              <ion-button  color="danger" (click)="deleteItem(codigo)">
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>    
+    
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
   
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  <ion-button expand="full"
-              (click)="readNfc()" 
-              color="warning">Forzar Lectura</ion-button>
+  <ion-row>
+    <ion-col size="2"></ion-col>
+    <ion-col size="8">
+      <ion-button expand="block"
+      (click)="readNfc()" 
+      color="warning">Forzar Lectura</ion-button>
 
-    <ion-button expand="full"
-                (click)="goToList()" 
-                color="primary">Siguiente</ion-button>
+    </ion-col>
+    <ion-col size="2"></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="2"></ion-col>
+    <ion-col size="8">
+      <ion-button expand="block"
+      (click)="goToList()" 
+      color="primary">Siguiente</ion-button>
+    </ion-col>
+    <ion-col size="2"></ion-col>
+  </ion-row>
+
+
 </ion-footer>
