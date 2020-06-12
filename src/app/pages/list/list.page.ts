@@ -67,7 +67,8 @@ export class ListPage implements OnInit {
             }
           )
     });
-
+    
+    console.log("Enviado Correctamente");    
     this.alertService.presentToast("Enviado Correctamente");
     this.router.navigate(['']);
   }
