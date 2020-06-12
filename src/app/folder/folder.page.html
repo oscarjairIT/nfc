@@ -1,52 +1,22 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <!-- <ion-buttons slot="end"> 
-      <ion-button (click)="toogleDarkMode()">
-        Dark/Light
-      </ion-button>
-    </ion-buttons> -->
-    <!-- <ion-title>{{ folder }}</ion-title> -->
-    <!-- <ion-thumbnail slot="start">
-      <img src="./../assets/loomis.png">
-    </ion-thumbnail> -->
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <!-- <ion-title size="large">{{ folder }}</ion-title> -->
-      <ion-title size="large">dasds</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <!-- <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
-    <ion-card id="loomis">
-      <!-- <ion-img src="./../assets/loomis.png"></ion-img> -->
-    </ion-card>
-
-    
+<ion-content>
 
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Ingrese Patente</ion-card-title>
-      </ion-card-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Ingrese Patente</ion-card-title>
+    </ion-card-header>
 
-      <ion-card-content>
-        <ion-input  type="text"
-                    [ngModel]="ccia" (ngModelChange)="ccia = $event.toLocaleUpperCase()"
-                    (ionChange)="patenteOnChange($event)"
-                    placeholder="PPKK89"></ion-input>
-      </ion-card-content>
-    </ion-card>
-    <ion-button expand="full"
-                (click)="goToReadNfc()" 
-                color="primary">Siguiente</ion-button>
-  </div>
+    <ion-card-content>
+      <ion-input  type="text"
+                  [ngModel]="ccia" (ngModelChange)="ccia = $event.toLocaleUpperCase()"
+                  (ionChange)="patenteOnChange($event)"
+                  placeholder="PPKK89"></ion-input>
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="full"
+              (click)="goToReadNfc()" 
+              color="primary">Siguiente</ion-button>
+
 </ion-content>

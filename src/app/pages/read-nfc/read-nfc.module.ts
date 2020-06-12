@@ -8,13 +8,15 @@ import { ReadNfcPageRoutingModule } from './read-nfc-routing.module';
 
 import { ReadNfcPage } from './read-nfc.page';
 import { NFC, Ndef } from "@ionic-native/nfc/ngx";
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReadNfcPageRoutingModule
+    ReadNfcPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [ReadNfcPage],
   providers: [

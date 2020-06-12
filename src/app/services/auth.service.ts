@@ -9,8 +9,8 @@ import { AlertService } from './alert.service';
 })
 export class AuthService {
 
-  isLoggedIn = false;
-  token:string;
+  isLoggedIn = true;
+  token:string ;
 
   constructor(
     private sharedService: SharedService,

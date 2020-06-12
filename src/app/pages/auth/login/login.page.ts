@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
       data => {
         console.log("data: ",data);  
         if (this.authService.isLoggedIn){
-          this.navCtrl.navigateRoot('/folder/Inbox');
+          this.navCtrl.navigateRoot('folder');
         }  
       },
       error => {

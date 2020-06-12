@@ -27,13 +27,12 @@ export class FolderPage implements OnInit {
     ) { }
 
   ionViewWillEnter() {
-      this.authService.getToken().then(() => {
-        if(!this.authService.isLoggedIn) {
-          // this.navCtrl.navigateRoot('/dashboard');
-          console.log("no está logeado, mandando a login");
-          this.router.navigate(['/login']);
-        }
-      });
+      // this.authService.getToken().then(() => {
+      //   if(!this.authService.isLoggedIn) {
+      //     console.log("no está logeado, mandando a login");
+      //     this.router.navigate(['/login']);
+      //   }
+      // });
   }
 
   ngOnInit() {
