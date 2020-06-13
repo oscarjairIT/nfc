@@ -17,6 +17,7 @@ import { AuthService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 import { ComponentsModule } from './components/components.module';
 import { IonicStorageModule } from '@ionic/storage';
+import { OCR } from '@ionic-native/ocr/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +28,8 @@ import { IonicStorageModule } from '@ionic/storage';
     AppRoutingModule,
     HttpClientModule,
     ComponentsModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    // OCR
   ],
   providers: [
     StatusBar,
@@ -37,6 +39,7 @@ import { IonicStorageModule } from '@ionic/storage';
     AlertService,
     HTTP,
     NativeStorage,
+    OCR,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
