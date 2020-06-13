@@ -16,6 +16,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { AuthService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 import { ComponentsModule } from './components/components.module';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import { ComponentsModule } from './components/components.module';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    ComponentsModule
+    ComponentsModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,

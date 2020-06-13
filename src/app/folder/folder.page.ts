@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-/* Agregadas */
 import { Router, NavigationExtras  } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
 import { SharedService } from '../services/shared.service';
 import { AuthService } from '../services/auth.service';
 import { ViajeService } from '../services/viaje.service';
+import { DataLocalService } from '../services/data-local.service';
+import { Persona } from '../models/persona';
 
 @Component({
   selector: 'app-folder',
@@ -17,13 +17,20 @@ export class FolderPage implements OnInit {
   public folder: string;
   patente = '';
 
+  /**
+   * Variables para tests
+   */
+  personasIniciales: Persona[] = [
+    {id_persona: 1, nombre_persona: 'Juan', apellido_persona: 'Perez', imagen: 'http://www.looomis.cl/img/img.jpg'},
+    {id_persona:2,nombre_persona:'Jose',apellido_persona:'Diaz',imagen:"http://www.looomis.cl/img/img.jpg"}
+  ]
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private themeService: ThemeService,
-    private service: SharedService,
     private authService: AuthService,
-    private viajeService: ViajeService
+    private dataLocalService: DataLocalService
     ) { }
 
   ionViewWillEnter() {
@@ -33,6 +40,7 @@ export class FolderPage implements OnInit {
       //     this.router.navigate(['/login']);
       //   }
       // });
+
   }
 
   ngOnInit() {
@@ -41,6 +49,19 @@ export class FolderPage implements OnInit {
     // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
     this.toogleDarkMode();
     this.patente = '';
+    console.log('NgOnInit');
+
+    this.dataLocalService.savePersonalInicial(this.personasIniciales).then(
+      resp => {
+        console.log("from ionViewWillEnter",resp);
+      }
+    );
+    
+    this.dataLocalService.printAllData().then(
+      resp => {
+        console.log("respuesta: ", resp);  
+      }
+    )
   }
 
   goToReadNfc(){    
