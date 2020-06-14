@@ -7,6 +7,8 @@ import { Viaje } from './../../models/viaje';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { ViajeService } from 'src/app/services/viaje.service';
 import { OcrService } from 'src/app/services/ocr.service';
+import { CameraService } from 'src/app/services/camera.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-read-nfc',
@@ -33,7 +35,9 @@ export class ReadNfcPage implements OnInit {
     private nfc: NFC, 
     private ndef: Ndef,
     private viajeService: ViajeService,
-    private ocrService: OcrService
+    private ocrService: OcrService,
+    private cameraService: CameraService,
+    private alertService: AlertService
   ) { 
     this.activatedRoute.queryParams.subscribe(params => {
       // console.log("params: ",params);
@@ -47,9 +51,19 @@ export class ReadNfcPage implements OnInit {
 
   ngOnInit() {
     // this.listeningNFC();
-    console.log("llamando a OCR");
-    
-    this.ocrService.testOCR();
+    // console.log("llamando a OCR");
+    this.cameraService.testCamera().then(
+      resp => {
+        // console.log();
+        this.ocrService.testOCR(resp).then(
+          response => {
+            console.log(response);            
+            this.alertService.presentToast(response);
+          }
+        )
+      }
+    );
+    // this.ocrService.testOCR();
     // this.viajeService.createVehiculo('JJKK88').then(
     //   resp => {
     //     console.log("createVehiculo respuesta: ",resp);  

@@ -18,6 +18,7 @@ import { AlertService } from './services/alert.service';
 import { ComponentsModule } from './components/components.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { OCR } from '@ionic-native/ocr/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { OCR } from '@ionic-native/ocr/ngx';
     HTTP,
     NativeStorage,
     OCR,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
