@@ -51,29 +51,21 @@ export class ReadNfcPage implements OnInit {
 
   ngOnInit() {
     // this.listeningNFC();
-    // console.log("llamando a OCR");
-    this.cameraService.testCamera().then(
-      resp => {
-        // console.log();
-        this.ocrService.testOCR(resp).then(
-          response => {
-            console.log(response);            
-            this.alertService.presentToast(response);
+
+    this.cameraService.takePicture().then(
+      picture => {
+        this.ocrService.getOCR(picture).then(
+          blocktext => {
+            this.ocrService.filterOcrString(blocktext).then(
+              filtered => {
+                console.log("resultado final: ",filtered);
+              }
+            );
           }
-        )
+        );
       }
     );
-    // this.ocrService.testOCR();
-    // this.viajeService.createVehiculo('JJKK88').then(
-    //   resp => {
-    //     console.log("createVehiculo respuesta: ",resp);  
-    //   }
-    // );
-    // this.viajeService.getVehiculoIDByPatente("PRUEBA1").then(
-    //   resp => {
-    //     console.log("getVehiculoIDByPatente respuesta: ", resp);  
-    //   }
-    // );
+    
   }
 
   readNfc(){
@@ -102,31 +94,6 @@ export class ReadNfcPage implements OnInit {
     if(index > -1){
       this.listNFCs.splice(index, 1);
     }
-  }
-
-  /*no funka */
-  listeningNfc2(){
-    this.nfc.addNdefListener(() => {
-      console.log('successfully attached ndef listener');
-    }, (err) => {
-      console.log('error attaching ndef listener', err);
-    }).subscribe((event) => {
-      console.log('received ndef message. the tag contains: ', event.tag);
-      console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
-    
-      let message = this.ndef.textRecord('Hello world');
-      this.nfc.share([message]).then(
-        onSucess => {
-          console.log(onSucess);
-          
-        }
-      ).catch(
-        onError => {
-          console.log(onError);
-          
-        }
-      );
-    });
   }
 
   listeningNFC(){

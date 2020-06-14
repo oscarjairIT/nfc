@@ -10,9 +10,11 @@ export class CameraService {
 
   constructor(private camera: Camera) { }
 
-  async testCamera():Promise<any>{
-    console.log("en testCamera");
-    
+  /**
+   * Devuelve string base64 de foto tomada
+   * nose donde se guarda aun, pero se puede borrar las fotos de la camara
+   */
+  async takePicture():Promise<any>{    
     return new Promise( (resolve) => {
 
       const options: CameraOptions = {
@@ -23,12 +25,8 @@ export class CameraService {
       }
 
       this.camera.getPicture(options).then((imageData) => {
-        // imageData is either a base64 encoded string or a file URI
-        // If it's base64 (DATA_URL):
-        console.log("options: ", options);
-        
+        console.log("CameraOptions: ", options);        
         let base64Image = 'data:image/jpeg;base64,' + imageData;
-        // console.log("base64: ",imageData);
         resolve(imageData);
         }, (err) => {
         // Handle error
