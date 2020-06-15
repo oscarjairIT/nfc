@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Observable } from 'rxjs';
 import { Persona } from '../models/persona';
 
 @Injectable({
@@ -53,4 +52,20 @@ export class DataLocalService {
     });
   }
 
+  /**
+   * Setea TRUE el estado de isLogged en storage
+   */
+  async saveLogin():Promise<any>{
+    return new Promise( (resolve) => {
+      this.storage.set('isLogged', true).then(
+        resp => {
+          console.log("respuesta login: ",resp);
+          resolve(resp);
+        },
+        err => {
+          console.log(err);  
+        }
+      )
+    });
+  }
 }
