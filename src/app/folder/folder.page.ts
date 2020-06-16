@@ -14,6 +14,11 @@ import { AlertService } from '../services/alert.service';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
+  listNFCs: Persona[] = [
+    {id_persona: 1, nfc: "423423s", nombre_persona: "Daniel", apellido_persona: "Ahumada", imagen: "dasd"},
+    {id_persona: 1, nfc: "4rer23s", nombre_persona: "Ricardo", apellido_persona: "Valenzuela", imagen: "dasd"},
+    {id_persona: 1, nfc: "42vcx42", nombre_persona: "Ismael", apellido_persona: "Oyarzun", imagen: "dasd"}
+  ];
   public folder: string;
   patente = '';
 
@@ -59,6 +64,14 @@ export class FolderPage implements OnInit {
 
   toogleDarkMode(){
     this.themeService.toogleAppTheme();
+  }
+
+  deleteItem(item) {
+    let index = this.listNFCs.indexOf(item);
+
+    if(index > -1){
+      this.listNFCs.splice(index, 1);
+    }
   }
 
 }

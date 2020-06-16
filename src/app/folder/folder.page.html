@@ -1,44 +1,82 @@
 <ion-header >
   <ion-toolbar>
+    <!-- <ion-title>Registra Tripulacion</ion-title> -->
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <br>
-  <br>
+<ion-content fullscreen="true">
+
+  <!-- <ion-row>
+    <ion-col size="4"></ion-col>
+    <ion-col size="8">
+      <ion-thumbnail>
+        <ion-img src="./../assets/loomis.png"></ion-img>
+      </ion-thumbnail>
+    </ion-col>
+  </ion-row> -->
+  <!-- INGRESO DE PATENTE -->
   <ion-row>
     <ion-col size="12">
       <ion-card>
-        <ion-card-header>
-          <ion-card-title>Ingrese Patente</ion-card-title>
-        </ion-card-header>
-    
         <ion-card-content>
           <ion-input  type="text"
                       [ngModel]="ccia" (ngModelChange)="ccia = $event.toLocaleUpperCase()"
                       (ionChange)="patenteOnChange($event)"
-                      placeholder="PPKK89"></ion-input>
+                      placeholder="Ingrese Patente"></ion-input>
         </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col size="2"></ion-col>
-
-    <ion-col size="8">
-      <ion-button expand="block"
-      (click)="goToReadNfc()" 
-      color="primary">Siguiente</ion-button>
+    <ion-col size="12">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Acerque Tarjeta</ion-card-title>
+        </ion-card-header>
+    
+        <ion-card-content>
+    
+          <ion-list>
+            <ion-item *ngFor="let persona of listNFCs">
+              <ion-label>
+                {{persona.nombre_persona}} {{persona.apellido_persona}}
+              </ion-label>
+              <ion-icon color="danger" 
+                        name="close-circle"
+                        (click)="deleteItem(persona)"></ion-icon>
+            </ion-item>
+          </ion-list>    
+    
+        </ion-card-content>
+      </ion-card>
     </ion-col>
-
-    <ion-col size="2"></ion-col>
   </ion-row>
 
-
-
-
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-row>
+    <ion-col size="12">
+      <ion-button expand="block"
+      (click)="goToReadNfc()" 
+      color="medium">Forzar Escaneo</ion-button>
+    </ion-col>
+
+
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button expand="block"
+      (click)="goToReadNfc()" 
+      color="warning">
+      <!-- <ion-text color="primary"> -->
+        Finalizar Proceso
+      <!-- </ion-text> -->
+    </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
