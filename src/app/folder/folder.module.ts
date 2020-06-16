@@ -8,6 +8,7 @@ import { FolderPageRoutingModule } from './folder-routing.module';
 
 import { FolderPage } from './folder.page';
 import { ComponentsModule } from '../components/components.module';
+import { NFC, Ndef } from "@ionic-native/nfc/ngx";
 
 
 
@@ -19,7 +20,11 @@ import { ComponentsModule } from '../components/components.module';
     FolderPageRoutingModule,
     ComponentsModule
   ],
-  declarations: [FolderPage]
+  declarations: [FolderPage],
+  providers: [
+    NFC,
+    Ndef
+  ]
 })
 export class FolderPageModule {
 
