@@ -8,6 +8,9 @@ import { DataLocalService } from '../services/data-local.service';
 import { Persona } from '../models/persona';
 import { AlertService } from '../services/alert.service';
 import { NFC } from '@ionic-native/nfc/ngx';
+import { ApiLoomisService } from '../services/api-loomis.service';
+import { Tripulacion, PersonalParaEnvio } from '../models/tripulacion';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-folder',
@@ -15,10 +18,11 @@ import { NFC } from '@ionic-native/nfc/ngx';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  listaCargada: Persona[] = [
-    {id_persona: 1, nfc: "b34cec3e", nombre_persona: "Daniel", apellido_persona: "Ahumada", imagen: "dasd"},
-    {id_persona: 1, nfc: "04178062ff3480", nombre_persona: "Ricardo", apellido_persona: "Valenzuela", imagen: "dasd"},
-  ];
+  // listaCargada: Persona[] = [
+  //   {id_persona: 1, nfc: "b34cec3e", nombre_persona: "Daniel", apellido_persona: "Ahumada", imagen: "dasd"},
+  //   {id_persona: 1, nfc: "04178062ff3480", nombre_persona: "Ricardo", apellido_persona: "Valenzuela", imagen: "dasd"},
+  // ];
+  listaCargada: Persona[] = [];
   listNFCs: Persona[] = [
     {id_persona: 1, nfc: "42vcx42", nombre_persona: "Ismael", apellido_persona: "Oyarzun", imagen: "dasd"}
   ];
@@ -30,14 +34,21 @@ export class FolderPage implements OnInit {
   public folder: string;
   patente = '';
 
+  /*Data a enviar */
+  tripulacion: Tripulacion = new Tripulacion();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private themeService: ThemeService,
     private dataLocalService: DataLocalService,
     private alertService: AlertService,
-    private nfc: NFC
-    ) { }
+    private nfc: NFC,
+    private apiLoomis: ApiLoomisService,
+    private alertController: AlertController
+    ) {
+      this.tripulacion.tripulacion = [];
+    }
 
   ionViewWillEnter() {
     // Testeando guardado de estado logeado
@@ -50,10 +61,32 @@ export class FolderPage implements OnInit {
   }
 
   ngOnInit() {
+    this.apiLoomis.getPersonal().then(
+      resp =>{
+        this.dataLocalService.printAllData().then(
+          ok=>{
+            console.log("Respuesta de servicio inicial de carga de personal: ",resp);
+            // for asignando resp a listaCargada
+            resp.forEach(element => {
+              // console.log(element.nfc);
+
+              this.listaCargada.push({id_persona: element.id_persona, 
+                                      nfc: element.nfc, 
+                                      nombre_persona: element.nombre_persona,
+                                      apellido_persona: element.apellido_persona,
+                                      imagen: element.imagen});
+            });
+          }
+        );
+      },
+      err =>{
+        console.log(err);
+      }
+    );
     this.listeningNFC();
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.toogleDarkMode();
-    this.patente = '';
+    // this.patente = '';
   }
 
   // goToReadNfc(){    
@@ -66,6 +99,38 @@ export class FolderPage implements OnInit {
   //   };
   //   this.router.navigate(['/read-nfc'], navigationExtras);
   // }
+
+  async quieroEnviar() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmar',
+      // subHeader: 'Subtitle',
+      message: '¿Está seguro de enviar esta tripulación?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        },
+        {
+          text: 'Si',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.sendingTripulacion().then(
+              resp=> {
+                console.log(resp);
+              }
+            );
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   patenteOnChange(e){
     console.log(e.detail.value);
@@ -89,13 +154,13 @@ export class FolderPage implements OnInit {
     
     this.nfc.addTagDiscoveredListener().subscribe(event => {
       /*LOGS */
-      // console.log('Tag detected: ' + JSON.stringify(event));
-      // console.log('received ndef message. the tag contains: ', event.tag);
+      console.log('Tag detected: ' + JSON.stringify(event));
+      console.log('received ndef message. the tag contains: ', event.tag);
       console.log('numero de serie', this.nfc.bytesToHexString(event.tag.id));
       /*Variables */
       this.RFIDDATA1 = 'Tag detected: ' + JSON.stringify(event)
       this.RFIDDATA2 = 'received ndef message. the tag contains: ', event.tag
-      // this.RFIDDATA3= 'numero de serie', this.nfc.bytesToHexString(event.tag.id)
+      this.RFIDDATA3= 'numero de serie', this.nfc.bytesToHexString(event.tag.id)
       this.RFIDDATA3= this.nfc.bytesToHexString(event.tag.id)
       console.log("Leido: ",this.RFIDDATA3);
       
@@ -113,12 +178,20 @@ export class FolderPage implements OnInit {
       );
 
 
-
-      // let a = event.tag.id;
-      // a.reverse();
-      // // console.log('tag publico: ', parseInt(this.nfc.bytesToHexString(a), 16));
-      // a = parseInt(this.nfc.bytesToHexString(a), 16)
-      // this.NFCREAD = event
+      console.log("FLAG_READER_NFC_BARCODE: ", this.nfc.FLAG_READER_NFC_BARCODE);
+      console.log("FLAG_READER_NFC_F: ",this.nfc.FLAG_READER_NFC_F);
+      console.log("FLAG_READER_NFC_A: ", this.nfc.FLAG_READER_NFC_A);
+      console.log("FLAG_READER_NFC_B: ", this.nfc.FLAG_READER_NFC_B);
+      console.log("FLAG_READER_NFC_V: ", this.nfc.FLAG_READER_NFC_V);
+      
+      
+      
+      let a = event.tag.id;
+      a.reverse();
+      console.log('tag publico: ', parseInt(this.nfc.bytesToHexString(a), 16));
+      a = parseInt(this.nfc.bytesToHexString(a), 16)
+      this.NFCREAD = event
+      
     });
   }
 
@@ -147,6 +220,71 @@ export class FolderPage implements OnInit {
 
       console.log("en comparing");
       
+    });
+  }
+
+  /**
+   *  Envia tripulacion
+   */
+  async sendingTripulacion():Promise<any>{
+    return new Promise( (resolve) => {
+      this.createTripulacion().then(
+        tripulacion=>{
+          console.log("tripulacion antes de enviarse: ", tripulacion);
+          console.log("tripulacion de variable: ", this.tripulacion);
+          
+          
+          this.apiLoomis.sendTripulacion(tripulacion).then(
+            resp=>{
+              console.log("Tripulacion Enviada Correctamente");
+              console.log(resp);
+              this.alertService.presentToast("Enviado Correctamente");
+              resolve(resp);
+            },
+            err=>{
+              console.log(err);
+            }
+          );
+        },
+        err=>{
+          console.log(err);
+        }
+      );
+    });
+  }
+
+  /**
+   * Crea Objeto Tripulacion
+   */
+  async createTripulacion():Promise<any>{
+    return new Promise( (resolve) => {
+      
+      this.tripulacion.patente = this.patente;
+      let index;
+      for (index = 0; index < this.listaCargada.length; index++) {
+        const element = this.listaCargada[index];
+        
+        this.tripulacion.tripulacion.push({
+          id_persona: element.id_persona,
+          nombre_persona: element.nombre_persona,
+          apellido_persona: element.apellido_persona
+        });
+      }
+      
+      if(index >= this.listaCargada.length){
+        // console.log("ajuera",this.tripulacion);
+        resolve(this.tripulacion);
+      }
+
+      // this.listaCargada.forEach(element => {
+
+      //   this.tripulacion.tripulacion.push({
+      //     id_persona: element.id_persona,
+      //     nombre_persona: element.nombre_persona,
+      //     apellido_persona: element.apellido_persona
+      //   });
+
+      // });
     });
   }
 
