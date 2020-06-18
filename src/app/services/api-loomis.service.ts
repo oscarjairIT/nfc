@@ -14,8 +14,8 @@ export class ApiLoomisService {
    * Variables para tests
    */
   personasIniciales: Persona[] = [
-    {id_persona: 1, nfc: 'b34cec3e' ,nombre_persona: 'Juana', apellido_persona: 'Perez', imagen: 'https://previews.123rf.com/images/dolgachov/dolgachov1604/dolgachov160401829/54866409-personas-el-cuidado-de-la-salud-de-la-vista-de-negocios-y-concepto-de-la-educaci%C3%B3n-la-cara-de-mujer-jov.jpg'},
-    {id_persona:2, nfc: '04178062ff3480' ,nombre_persona:'Jose',apellido_persona:'Diaz',imagen:"https://www.capacitacionadministrativa.com/wp-content/uploads/2018/05/testimonio3.jpg"}
+    {id_persona: 1, nfc: '1055673523' ,nombre_persona: 'Juana', apellido_persona: 'Perez', imagen: 'https://previews.123rf.com/images/dolgachov/dolgachov1604/dolgachov160401829/54866409-personas-el-cuidado-de-la-salud-de-la-vista-de-negocios-y-concepto-de-la-educaci%C3%B3n-la-cara-de-mujer-jov.jpg'},
+    {id_persona:2, nfc: '36087068492830460' ,nombre_persona:'Jose',apellido_persona:'Diaz',imagen:"https://www.capacitacionadministrativa.com/wp-content/uploads/2018/05/testimonio3.jpg"}
   ]
 
   constructor(

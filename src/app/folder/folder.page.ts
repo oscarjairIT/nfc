@@ -151,21 +151,19 @@ export class FolderPage implements OnInit {
 
   listeningNFC(){
     console.log("listening ..");
-    
+    let code;
     this.nfc.addTagDiscoveredListener().subscribe(event => {
-      /*LOGS */
-      console.log('Tag detected: ' + JSON.stringify(event));
-      console.log('received ndef message. the tag contains: ', event.tag);
-      console.log('numero de serie', this.nfc.bytesToHexString(event.tag.id));
-      /*Variables */
-      this.RFIDDATA1 = 'Tag detected: ' + JSON.stringify(event)
-      this.RFIDDATA2 = 'received ndef message. the tag contains: ', event.tag
-      this.RFIDDATA3= 'numero de serie', this.nfc.bytesToHexString(event.tag.id)
-      this.RFIDDATA3= this.nfc.bytesToHexString(event.tag.id)
-      console.log("Leido: ",this.RFIDDATA3);
+      console.log('HEXA: ', this.nfc.bytesToHexString(event.tag.id));
+      let uno = this.nfc.bytesToHexString(event.tag.id)
+      console.log("hexa dec ",parseInt(uno, 16));
+      let dos = event.tag.id.reverse()
+      console.log("hex invert: ",this.nfc.bytesToHexString(dos))
+      console.log("Decimal invers: ",parseInt(this.nfc.bytesToHexString(dos), 16))
+      // this.nfc.
+      code = parseInt(this.nfc.bytesToHexString(dos), 16);
       
       /*Comparando nfc leido con lista de personal autorizado*/
-      this.comparingNfcListCurrentNfc(this.RFIDDATA3).then(
+      this.comparingNfcListCurrentNfc(code).then(
         resp => {
           console.log("respuesta de comparacion: ", resp);
           /*Agregando a la Lista */
@@ -176,21 +174,6 @@ export class FolderPage implements OnInit {
           this.alertService.presentToast("Error leyendo personal");
         }
       );
-
-
-      console.log("FLAG_READER_NFC_BARCODE: ", this.nfc.FLAG_READER_NFC_BARCODE);
-      console.log("FLAG_READER_NFC_F: ",this.nfc.FLAG_READER_NFC_F);
-      console.log("FLAG_READER_NFC_A: ", this.nfc.FLAG_READER_NFC_A);
-      console.log("FLAG_READER_NFC_B: ", this.nfc.FLAG_READER_NFC_B);
-      console.log("FLAG_READER_NFC_V: ", this.nfc.FLAG_READER_NFC_V);
-      
-      
-      
-      let a = event.tag.id;
-      a.reverse();
-      console.log('tag publico: ', parseInt(this.nfc.bytesToHexString(a), 16));
-      a = parseInt(this.nfc.bytesToHexString(a), 16)
-      this.NFCREAD = event
       
     });
   }
