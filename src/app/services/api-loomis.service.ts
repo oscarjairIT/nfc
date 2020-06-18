@@ -13,10 +13,10 @@ export class ApiLoomisService {
   /**
    * Variables para tests
    */
-  personasIniciales: Persona[] = [
-    {id_persona: 1, nfc: '1055673523' ,nombre_persona: 'Juana', apellido_persona: 'Perez', imagen: 'https://previews.123rf.com/images/dolgachov/dolgachov1604/dolgachov160401829/54866409-personas-el-cuidado-de-la-salud-de-la-vista-de-negocios-y-concepto-de-la-educaci%C3%B3n-la-cara-de-mujer-jov.jpg'},
-    {id_persona:2, nfc: '36087068492830460' ,nombre_persona:'Jose',apellido_persona:'Diaz',imagen:"https://www.capacitacionadministrativa.com/wp-content/uploads/2018/05/testimonio3.jpg"}
-  ]
+  // personasIniciales: Persona[] = [
+  //   {id_persona: 1, nfc: '1055673523' ,nombre_persona: 'Juana', apellido_persona: 'Perez', imagen: 'https://previews.123rf.com/images/dolgachov/dolgachov1604/dolgachov160401829/54866409-personas-el-cuidado-de-la-salud-de-la-vista-de-negocios-y-concepto-de-la-educaci%C3%B3n-la-cara-de-mujer-jov.jpg'},
+  //   {id_persona:2, nfc: '36087068492830460' ,nombre_persona:'Jose',apellido_persona:'Diaz',imagen:"https://www.capacitacionadministrativa.com/wp-content/uploads/2018/05/testimonio3.jpg"}
+  // ]
 
   constructor(
     private sharedService: SharedService,
@@ -35,27 +35,30 @@ export class ApiLoomisService {
    */
   async getPersonal():Promise<any>{
     return new Promise( (resolve) => {
-      this.dataLocalService.savePersonalInicial(this.personasIniciales).then(
-        resp =>{
-          resolve(resp);
-        },
-        err =>{
-          console.log(err);  
-        }
-      );
-      // this.http.get(
-      //   this.sharedService.API_LOOMIS + "tripulantes/personal/",
-      //   {},
-      //   {}
-      // ).then(
-      //   resp => {
-      //     console.log(resp);
+      // this.dataLocalService.savePersonalInicial(this.personasIniciales).then(
+      //   resp =>{
       //     resolve(resp);
       //   },
-      //   err => {
+      //   err =>{
       //     console.log(err);  
       //   }
-      // )
+      // );
+      this.http.get(
+        this.sharedService.API_LOOMIS + "personal/",
+        {},
+        {}
+      ).then(
+        resp => {
+          console.log(resp);
+          let respParsed = JSON.parse(resp.data);
+          console.log(respParsed);
+          
+          resolve(respParsed);
+        },
+        err => {
+          console.log(err);  
+        }
+      )
     });
   }
 
@@ -69,15 +72,30 @@ export class ApiLoomisService {
    * Informa si usuario esta autorizado o no
    */
   async login(user: string, key: string):Promise<any>{
+    console.log("a enviar: ", user + " "+ key);
+    
     return new Promise( (resolve) => {
-      this.http.get(
-        this.sharedService.API_LOOMIS + "tripulantes/inicio/",
+      this.http.setDataSerializer('json');
+      this.http.post(
+        this.sharedService.API_LOOMIS + "inicio/",
+        // "{usuario: "+ user + ", clave: "+ key +"}",
         {usuario: user, clave: key},
+
+        // { method: 'post'}
+        // {'Content-Type': 'application/json'}
+        // {}
+        // {'Content-Type':'text/plain'}
+        // {'Content-Type':'application/x-www-form-urlencoded'}
         {}
       ).then(
         resp => {
           console.log(resp);
-          resolve(resp);
+          // console.log(resp.data);
+
+          // console.log(resp.data.respuesta);
+          let respParsed = JSON.parse(resp.data);
+          console.log(respParsed.respuesta);
+          resolve(respParsed.respuesta);
         },
         err => {
           console.log(err);  
@@ -98,22 +116,27 @@ export class ApiLoomisService {
    * 
    * Informa si usuario esta autorizado o no
    */
-  async sendTripulacion(tripulacion: Tripulacion):Promise<any>{
+  async sendTripulacion(patente: string, tripulacion: PersonalParaEnvio[]):Promise<any>{
+    // console.log("*****a enviar: ",tripulacion);
+    console.log("*****a enviar: ",{patente: patente, tripulacion: tripulacion});
+    
     return new Promise( (resolve) => {
-      resolve("Enviado a la api");
-      // this.http.post(
-      //   this.sharedService.API_LOOMIS + "tripulantes/vehiculo/",
-      //   {patente: tripulacion.patente, tripulacion: tripulacion.tripulacion},
-      //   {}
-      // ).then(
-      //   resp => {
-      //     console.log(resp);
-      //     resolve(resp);
-      //   },
-      //   err => {
-      //     console.log(err);
-      //   }
-      // )
+      // resolve("Enviado a la api");
+      this.http.setDataSerializer('json');
+      this.http.post(
+        this.sharedService.API_LOOMIS + "vehiculo/",
+        {patente: patente, tripulacion: tripulacion},
+        {}
+      ).then(
+        resp => {
+          console.log(resp);
+          resolve(resp);
+        },
+        err => {
+          console.log(err);
+          // resolve(err); //para testing
+        }
+      )
     });
   }
 

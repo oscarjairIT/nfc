@@ -6,19 +6,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <form #form="ngForm" (ngSubmit)="login(form)" method="post">
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input ngModel type="email" name="email"></ion-input>
-    </ion-item>
-  
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input ngModel type="password" name="password"></ion-input>
-    </ion-item>
-  
-    <ion-button type="submit" expand="full" color="primary">Inicia Sesión</ion-button>
+<ion-content  fullscreen="true">
+  <form #form="ngForm" (ngSubmit)="loginLoomis(form)" method="post">
+    <!-- <ion-row> -->
+      <br>
+      <br>
+      <ion-card>
+        <ion-card-content>
+
+          <ion-item>
+            <ion-label position="floating">Usuario</ion-label>
+            <ion-input ngModel type="email" name="email"></ion-input>
+          </ion-item>
+        
+          <ion-item>
+            <ion-label position="floating">Clave</ion-label>
+            <ion-input ngModel type="password" name="password"></ion-input>
+          </ion-item>
+
+          <ion-button type="submit" expand="block" color="primary">Ingresar</ion-button>
+          
+        </ion-card-content>
+      </ion-card>
+    <!-- </ion-row> -->
+
+    
+
+    
+      
   </form>
 
 </ion-content>

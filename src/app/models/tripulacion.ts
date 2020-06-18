@@ -4,7 +4,6 @@ export class Tripulacion {
 }
 
 export class PersonalParaEnvio {
-    id_persona: number;
+    id_persona: string;
     nombre_persona: string;
-    apellido_persona: string;
 }

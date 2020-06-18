@@ -29,6 +29,7 @@
             <domain-config cleartextTrafficPermitted="true">
                 <domain includeSubdomains="true">localhost</domain>
                 <domain includeSubdomains="true">34.68.226.176</domain>
+                <domain includeSubdomains="true">api.loomischile.cl</domain>
             </domain-config>
         </network-security-config>
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">

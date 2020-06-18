@@ -1,7 +1,5 @@
 export class Persona {
-    id_persona: number;
-    nfc:        string;
-    nombre_persona: string;
-    apellido_persona: string;
-    imagen: string;
+    id_persona: string;
+    id_tarjeta:        string;
+    nombre: string;
 }

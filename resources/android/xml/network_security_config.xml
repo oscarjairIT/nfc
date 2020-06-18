@@ -8,5 +8,6 @@
             <domain-config cleartextTrafficPermitted="true">
                 <domain includeSubdomains="true">localhost</domain>
                 <domain includeSubdomains="true">34.68.226.176</domain>
+                <domain includeSubdomains="true">api.loomischile.cl</domain>
             </domain-config>
         </network-security-config>

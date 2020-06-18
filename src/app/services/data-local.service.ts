@@ -68,4 +68,22 @@ export class DataLocalService {
       )
     });
   }
+
+  /**
+   * Devuelve estado de logeo
+   */
+  async isLogged():Promise<any>{
+    return new Promise( (resolve) => {
+      this.storage.get('isLogged').then(
+        resp => {
+          console.log("DatalocalService: ",resp);
+          resolve(resp);
+        },
+        err =>{
+          console.log("DatalocalService: ", err);  
+        }
+      );
+    });
+  }
+
 }

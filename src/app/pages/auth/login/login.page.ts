@@ -46,19 +46,28 @@ export class LoginPage implements OnInit {
     this.apiLoomisService.login(form.value.email, form.value.password).then(
       resp => {
 
-        this.dataLocalService.saveLogin().then(
-          correct => {
-            this.alertService.presentToast(resp);  
-            this.navCtrl.navigateRoot('folder');
-          },
-          err => {
-            console.log(err);
-            this.alertService.presentToast('error al intentar guardar estado logeado');
-          }
-        );
+        if(resp == true){
+          this.dataLocalService.saveLogin().then(
+            correct => {
+              if (correct == true) {
+                this.alertService.presentToast("Usuario Correcto");  
+                this.navCtrl.navigateRoot('folder');
+              } else {
+                this.alertService.presentToast("Error guardando estado");  
+              }
+            },
+            err => {
+              console.log(err);
+              this.alertService.presentToast('error al intentar guardar estado logeado');
+            }
+          );
+        } else {
+          this.alertService.presentToast("Usuario Incorrecto");  
+        }
 
       },
       error => {
+        this.alertService.presentToast(error);
         console.log(error);
       }
     );

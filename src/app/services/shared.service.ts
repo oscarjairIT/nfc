@@ -11,7 +11,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class SharedService {
 
   API_URL_BASE = "http://34.68.226.176:3000/"
-  API_LOOMIS = "https://api.loomischile.cl/tripulantes/";
+  API_LOOMIS = "http://api.loomischile.cl/api/tripulantes/";
 
   public header: any;
   public host: any;

@@ -18,14 +18,12 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
+
   // listaCargada: Persona[] = [
-  //   {id_persona: 1, nfc: "b34cec3e", nombre_persona: "Daniel", apellido_persona: "Ahumada", imagen: "dasd"},
-  //   {id_persona: 1, nfc: "04178062ff3480", nombre_persona: "Ricardo", apellido_persona: "Valenzuela", imagen: "dasd"},
+  //   {id_persona: "18021254K", id_tarjeta: "3253082088", nombre:"TARDONE LUCAS"}
   // ];
   listaCargada: Persona[] = [];
-  listNFCs: Persona[] = [
-    {id_persona: 1, nfc: "42vcx42", nombre_persona: "Ismael", apellido_persona: "Oyarzun", imagen: "dasd"}
-  ];
+  listNFCs: Persona[] =[];
   noCoincide = true;
   RFIDDATA1: string;
   RFIDDATA2: string;
@@ -51,30 +49,36 @@ export class FolderPage implements OnInit {
     }
 
   ionViewWillEnter() {
-    // Testeando guardado de estado logeado
-    this.dataLocalService.saveLogin().then(
+    
+    this.dataLocalService.isLogged().then(
       resp => {
-        this.alertService.presentToast(resp);
-        this.dataLocalService.printAllData();
+        console.log(resp);
+        if(resp != true){
+          this.router.navigate(['/login']);
+        }
+      },
+      err=>{
+        console.log(err);  
+        this.alertService.presentToast(err);
       }
     );
+    
   }
 
   ngOnInit() {
     this.apiLoomis.getPersonal().then(
       resp =>{
-        this.dataLocalService.printAllData().then(
+        this.dataLocalService.savePersonalInicial(resp).then(
           ok=>{
-            console.log("Respuesta de servicio inicial de carga de personal: ",resp);
+            console.log("Request de servicio inicial de carga de personal: ",resp);
+            // let respParsed = JSON.parse(resp.data);
             // for asignando resp a listaCargada
             resp.forEach(element => {
               // console.log(element.nfc);
 
               this.listaCargada.push({id_persona: element.id_persona, 
-                                      nfc: element.nfc, 
-                                      nombre_persona: element.nombre_persona,
-                                      apellido_persona: element.apellido_persona,
-                                      imagen: element.imagen});
+                                    id_tarjeta: element.id_tarjeta, 
+                                      nombre: element.nombre});
             });
           }
         );
@@ -122,6 +126,12 @@ export class FolderPage implements OnInit {
             this.sendingTripulacion().then(
               resp=> {
                 console.log(resp);
+
+                /*Vaciando lista de envio y otras listas*/
+                this.tripulacion.tripulacion = [];
+                this.tripulacion.patente = '';
+                this.listNFCs = [];
+                this.patente = '';
               }
             );
           }
@@ -186,10 +196,11 @@ export class FolderPage implements OnInit {
     return new Promise( (resolve) => {
       let index = 0;
       // console.log(this.listaCargada.length);
+      // console.log("Lista Cargada: ", this.listaCargada);
       
       this.listaCargada.forEach(persona => {
         index ++;
-        if(persona.nfc == nfc_code){
+        if(persona.id_tarjeta == nfc_code){
           this.noCoincide = false;
           console.log("Autorizado");          
           this.alertService.presentToast("Autorizado");
@@ -213,11 +224,11 @@ export class FolderPage implements OnInit {
     return new Promise( (resolve) => {
       this.createTripulacion().then(
         tripulacion=>{
-          console.log("tripulacion antes de enviarse: ", tripulacion);
-          console.log("tripulacion de variable: ", this.tripulacion);
+          // console.log("tripulacion antes de enviarse: ", tripulacion);
+          console.log("patente de variable: ", this.tripulacion.patente);
+          console.log("tripulacion de variable: ", this.tripulacion.tripulacion);
           
-          
-          this.apiLoomis.sendTripulacion(tripulacion).then(
+          this.apiLoomis.sendTripulacion(this.tripulacion.patente , this.tripulacion.tripulacion).then(
             resp=>{
               console.log("Tripulacion Enviada Correctamente");
               console.log(resp);
@@ -240,22 +251,31 @@ export class FolderPage implements OnInit {
    * Crea Objeto Tripulacion
    */
   async createTripulacion():Promise<any>{
+    console.log("Lista Inical Cargada es: ", this.listaCargada);
+    console.log("Lista Autorizados: ", this.listNFCs);
+    
+    console.log("Lista para enviar antes de ser cargada: ", this.tripulacion);
+    // this.tripulacion.tripulacion.push()
     return new Promise( (resolve) => {
       
       this.tripulacion.patente = this.patente;
       let index;
-      for (index = 0; index < this.listaCargada.length; index++) {
-        const element = this.listaCargada[index];
+      for (index = 0; index < this.listNFCs.length; index++) {
+        const element =  this.listNFCs[index];
+        console.log("Leyendo: ", element);
         
         this.tripulacion.tripulacion.push({
           id_persona: element.id_persona,
-          nombre_persona: element.nombre_persona,
-          apellido_persona: element.apellido_persona
+          nombre_persona: element.nombre
         });
+        console.log("Uno mas: ", this.tripulacion.tripulacion);
+        
       }
       
-      if(index >= this.listaCargada.length){
+      if(index >=  this.listNFCs.length){
         // console.log("ajuera",this.tripulacion);
+        console.log("Lista para enviar luego de ser cargada: ", this.tripulacion);
+        
         resolve(this.tripulacion);
       }
 
