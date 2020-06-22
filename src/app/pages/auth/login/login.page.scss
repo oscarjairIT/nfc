@@ -1,3 +1,20 @@
-ion-toolbar {
-    --background: url('https://direct.loomis.com/static/media/loomis-logo.14b9f4ea.svg') bottom no-repeat;
+// ion-toolbar {
+//     --background: url('https://direct.loomis.com/static/media/loomis-logo.14b9f4ea.svg') bottom no-repeat;
+// }
+
+ion-img {
+    // align-self: center;
+    height: 80px;
+    width: 120px;
+  }
+
+ion-title {
+    // text-align: center;
+    padding: 0 120px 0px;
+    // align-content: center;
 }
+
+// ion-toolbar {
+
+//     align-content: center;
+// }

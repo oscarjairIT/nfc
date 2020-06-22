@@ -4,6 +4,8 @@ import { Tripulacion, PersonalParaEnvio } from '../models/tripulacion';
 import { HTTP } from '@ionic-native/http/ngx';
 import { SharedService } from './shared.service';
 import { DataLocalService } from './data-local.service';
+import { AlertService } from './alert.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +23,10 @@ export class ApiLoomisService {
   constructor(
     private sharedService: SharedService,
     private http: HTTP,
-    private dataLocalService: DataLocalService
+    private dataLocalService: DataLocalService,
+    private alertService: AlertService
   ) { }
 
-  // SIN PROBAR
   /**
    * GET: https://api.loomischile.cl/tripulantes/personal/
    * Carga de todo el personal
@@ -35,28 +37,33 @@ export class ApiLoomisService {
    */
   async getPersonal():Promise<any>{
     return new Promise( (resolve) => {
-      // this.dataLocalService.savePersonalInicial(this.personasIniciales).then(
-      //   resp =>{
-      //     resolve(resp);
-      //   },
-      //   err =>{
-      //     console.log(err);  
-      //   }
-      // );
+      this.http.setDataSerializer("raw");
+      this.http.setRequestTimeout(5);
       this.http.get(
-        this.sharedService.API_LOOMIS + "personal/",
+        "http://api.loomischile.cl/api/tripulantes/personal/",
         {},
         {}
       ).then(
         resp => {
           console.log(resp);
           let respParsed = JSON.parse(resp.data);
-          console.log(respParsed);
-          
+          // console.log("data parseada: ", respParsed);
+          // console.log(respParsed);
+          if(respParsed == true){
+            this.alertService.presentToast("Carga Correcta de Persona");
+          }
           resolve(respParsed);
         },
         err => {
-          console.log(err);  
+          // this.alertService.presentToast("Error al Cargar el Personal, inicia nuevamente")
+          console.log("eror al cargar: ",err);  
+          console.log("Error al cargar el personal");
+          
+        }
+      ).catch(
+        reason=>{
+          console.log("Razon: ",reason);
+          
         }
       )
     });
@@ -75,6 +82,7 @@ export class ApiLoomisService {
     console.log("a enviar: ", user + " "+ key);
     
     return new Promise( (resolve) => {
+      this.http.setRequestTimeout(3);
       this.http.setDataSerializer('json');
       this.http.post(
         this.sharedService.API_LOOMIS + "inicio/",
@@ -99,6 +107,7 @@ export class ApiLoomisService {
         },
         err => {
           console.log(err);  
+          this.alertService.presentToast("Error al intentar logear");
         }
       );
     });
@@ -118,10 +127,14 @@ export class ApiLoomisService {
    */
   async sendTripulacion(patente: string, tripulacion: PersonalParaEnvio[]):Promise<any>{
     // console.log("*****a enviar: ",tripulacion);
+    let tiempo1 = new Date();
+    // console.log("envia en: ",tiempo1);
+    
     console.log("*****a enviar: ",{patente: patente, tripulacion: tripulacion});
     
     return new Promise( (resolve) => {
       // resolve("Enviado a la api");
+      this.http.setRequestTimeout(5.0); //seconds
       this.http.setDataSerializer('json');
       this.http.post(
         this.sharedService.API_LOOMIS + "vehiculo/",
@@ -129,10 +142,16 @@ export class ApiLoomisService {
         {}
       ).then(
         resp => {
+          let tiempo2 = new Date();
+          // console.log("responde en: ", tiempo2);
+          let  difference = (tiempo2.getTime() - tiempo1.getTime()) / 1000;
+          console.log("Demora: ", difference);
+          
           console.log(resp);
           resolve(resp);
         },
         err => {
+          this.alertService.presentToast("Error al enviar, Intente nuevamente");
           console.log(err);
           // resolve(err); //para testing
         }

@@ -31,6 +31,9 @@ export class FolderPage implements OnInit {
   NFCREAD: any;
   public folder: string;
   patente = '';
+  enviandoSinPatente = false;
+  enviandoConPatente = false;
+  sinPersonal = true;
 
   /*Data a enviar */
   tripulacion: Tripulacion = new Tripulacion();
@@ -49,11 +52,12 @@ export class FolderPage implements OnInit {
     }
 
   ionViewWillEnter() {
+    this.getPersonalToLocal();
     
     this.dataLocalService.isLogged().then(
       resp => {
         console.log(resp);
-        if(resp != true){
+        if(resp == false){
           this.router.navigate(['/login']);
         }
       },
@@ -66,6 +70,17 @@ export class FolderPage implements OnInit {
   }
 
   ngOnInit() {
+    // this.getPersonalToLocal();
+    this.listeningNFC();
+    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.toogleDarkMode();
+    // this.patente = '';
+  }
+
+  getPersonalToLocal(){
+    this.alertService.presentToast("Cargando Personal");
+    console.log("Cargando Personal");
+    
     this.apiLoomis.getPersonal().then(
       resp =>{
         this.dataLocalService.savePersonalInicial(resp).then(
@@ -80,6 +95,8 @@ export class FolderPage implements OnInit {
                                     id_tarjeta: element.id_tarjeta, 
                                       nombre: element.nombre});
             });
+            this.sinPersonal = false;
+            this.alertService.presentToast("Carga de Personal Exitosa")
           }
         );
       },
@@ -87,10 +104,6 @@ export class FolderPage implements OnInit {
         console.log(err);
       }
     );
-    this.listeningNFC();
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.toogleDarkMode();
-    // this.patente = '';
   }
 
   // goToReadNfc(){    
@@ -104,7 +117,7 @@ export class FolderPage implements OnInit {
   //   this.router.navigate(['/read-nfc'], navigationExtras);
   // }
 
-  async quieroEnviar() {
+  async quieroEnviar(conPatente: boolean) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirmar',
@@ -123,6 +136,13 @@ export class FolderPage implements OnInit {
           text: 'Si',
           handler: () => {
             console.log('Confirm Okay');
+            if(conPatente){
+              this.enviandoConPatente = true;
+              this.enviandoSinPatente = false;
+            } else {
+              this.enviandoSinPatente = true;
+              this.enviandoConPatente = false;
+            }
             this.sendingTripulacion().then(
               resp=> {
                 console.log(resp);
@@ -132,6 +152,11 @@ export class FolderPage implements OnInit {
                 this.tripulacion.patente = '';
                 this.listNFCs = [];
                 this.patente = '';
+                if(conPatente){
+                  this.enviandoConPatente = false;
+                } else {
+                  this.enviandoSinPatente = false;
+                }
               }
             );
           }
@@ -159,7 +184,14 @@ export class FolderPage implements OnInit {
     }
   }
 
+  forzarEscaneo(){
+    // this.getPersonalToLocal();
+    this.alertService.presentToast("Iniciando Escaneo");
+    this.listeningNFC();
+  }
+
   listeningNFC(){
+    
     console.log("listening ..");
     let code;
     this.nfc.addTagDiscoveredListener().subscribe(event => {
@@ -257,7 +289,7 @@ export class FolderPage implements OnInit {
     console.log("Lista para enviar antes de ser cargada: ", this.tripulacion);
     // this.tripulacion.tripulacion.push()
     return new Promise( (resolve) => {
-      
+      this.patente = this.patente.toUpperCase();
       this.tripulacion.patente = this.patente;
       let index;
       for (index = 0; index < this.listNFCs.length; index++) {

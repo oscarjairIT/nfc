@@ -33,10 +33,11 @@ export class AppComponent implements OnInit {
     private storage: Storage
 
   ) {
-    this.initializeApp();
+    
     this.storage.set('isLogged', false).then(
       resp => {
         console.log("Seteando isLogged inicial: ",resp);
+        this.initializeApp();
       }
     );
   }
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
+    const path = window.location.pathname.split('login/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }

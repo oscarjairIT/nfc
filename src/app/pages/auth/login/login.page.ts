@@ -43,6 +43,7 @@ export class LoginPage implements OnInit {
    * 
    */
   loginLoomis(form: NgForm) {
+    this.alertService.presentToast("Logeando ...");
     this.apiLoomisService.login(form.value.email, form.value.password).then(
       resp => {
 
