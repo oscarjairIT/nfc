@@ -1,3 +1,90 @@
-ion-toolbar {
-    --background: url('https://direct.loomis.com/static/media/loomis-logo.14b9f4ea.svg') bottom no-repeat;
-}
+// ion-toolbar {
+//     --background: url('https://direct.loomis.com/static/media/loomis-logo.14b9f4ea.svg') bottom no-repeat;
+// }
+
+ion-menu-button {
+    color: var(--ion-color-primary);
+  }
+  
+  #container {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  #container strong {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  
+  #container p {
+    font-size: 16px;
+    line-height: 22px;
+    color: #8c8c8c;
+    margin: 0;
+  }
+  
+  #container a {
+    text-decoration: none;
+  }
+
+ion-img {
+    // align-self: center;
+    height: 80px;
+    width: 120px;
+    
+  }
+  
+  ion-title {
+    padding: 0px 60px 0px 60px;
+  }
+
+  ion-icon {
+    font-size: 40px;
+  }
+
+  ion-list {
+    overflow: hidden;
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .ion-text-center {
+    font-size: 20px;
+  }
+
+  .quiero-enviar-class{
+    font-size: 30px;
+    --alert-md-sub-title-font-size: 60px;
+    --alert-button-font-size: 118px
+  }
+
+  .alert-md-sub-title-font-size {
+    font-size: 30px;
+  }
+
+  $alert-button-font-size: 118px;
+  $alert-md-title-font-size:                    222px !default;
+  $alert-md-message-font-size:                  152px !default;
+
+  .alertCustomCss {
+    color: white; // text color for basic alerts
+    button {
+        color: white !important;
+        font-size:  $alert-button-font-size;
+        // background-color: color($colors, secondary, base) !important;
+    }
+    .alert-message {
+        color: white; // text color for confirm alerts
+        font-size: $alert-md-message-font-size;
+    }
+    .alert-wrapper {
+        // background-color: color($colors, dark, base);
+    }
+  }
+

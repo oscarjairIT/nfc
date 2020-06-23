@@ -31,6 +31,8 @@ export class DataLocalService {
     }); 
   }
 
+  // async savePatente(patente: string):
+
   /**
    * Imprime/Retorna en consola toda la BD
    */
@@ -67,6 +69,17 @@ export class DataLocalService {
         }
       )
     });
+  }
+
+  async getPersonal():Promise<any>{
+    return new Promise( (resolve) => {
+      this.storage.get('personas').then(
+        resp => {
+          resolve(resp)
+        }
+      )
+    }
+    );
   }
 
   /**

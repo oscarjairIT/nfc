@@ -8,94 +8,103 @@
         <ion-title >
       <ion-img src="./../assets/loomis.png"></ion-img>
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-icon class="personal_icon" *ngIf="sinPersonal" color="danger" 
-                        name="person"
-                        (click)="getPersonalToLocal()"></ion-icon>
-      <ion-icon *ngIf="!sinPersonal" color="success" 
-                name="person"
-                ></ion-icon>
-    </ion-buttons>
 
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <ion-card *ngIf="noDecideComoEnviar" >
+    <ion-row >
+      <!-- <ion-col size="1"></ion-col> -->
+      <ion-col size="12">
+        <ion-card-title class="ion-text-center">¿DESEA INGRESAR PATENTE?</ion-card-title>
+      </ion-col>    
+      <!-- <ion-col size="1"></ion-col>   -->
+    </ion-row>
+
+    <br>
+
+    <ion-row>
+      <!-- <ion-content> -->
+        <ion-col size="12">
+
+          <!-- BOTON SI ENVIAR PATENTE -->
+          <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+              <ion-button expand="block"
+                (click)="usarPatente()" 
+                color="success"
+                class="ion-text-center">
+                SI
+              </ion-button>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+          </ion-row>
+
+          <br>
+          <br>
+
+          <!-- BOTON NO ENVIAR PATENTE -->
+          <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+              <ion-button expand="block"
+                (click)="goToReadNfc()" 
+                color="warning"
+                class="ion-text-center">
+                  NO
+              </ion-button>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+          </ion-row>
+
+        </ion-col>
+      <!-- </ion-content> -->
+    </ion-row>
+    
+  </ion-card>
+
+  <!-- <br *ngIf="enviarPatente">
+  <br *ngIf="enviarPatente">
+  <br *ngIf="enviarPatente"> -->
+
 
   <!-- INGRESO DE PATENTE -->
-  <ion-row>
+  <ion-row *ngIf="enviarPatente">
     <ion-col size="12">
       <ion-card>
+        <ion-card-title class="ion-text-center">INGRESE PATENTE</ion-card-title>
         <ion-card-content>
           <ion-input  type="text"
+                      placeholder="Ejemplo: DRKJ-21"
                       (ionChange)="patenteOnChange($event)"
-                      placeholder="Ingrese Patente"></ion-input>
+                      class="ion-text-center"></ion-input>
         </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
 
-  <ion-row>
-    <ion-col size="12">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Acerque Tarjeta</ion-card-title>
-        </ion-card-header>
-    
-        <ion-card-content>
-    
-          <ion-list>
-            <ion-item *ngFor="let persona of listNFCs">
-              <ion-label>
-                {{persona.nombre}}
-              </ion-label>
-              <ion-icon color="danger" 
-                        name="close-circle"
-                        (click)="deleteItem(persona)"></ion-icon>
-            </ion-item>
-          </ion-list>    
-    
-        </ion-card-content>
-      </ion-card>
+  <br>
+
+  <ion-row *ngIf="enviarPatente">
+    <ion-col size="2"></ion-col>
+    <ion-col size="8">
+      <ion-button expand="block"
+      (click)="goToReadNfc()" 
+      color="warning"
+      class="ion-text-center">
+        Guardar
+    </ion-button>
     </ion-col>
+    <ion-col size="2"></ion-col>
   </ion-row>
 
 </ion-content>
 
-<ion-footer class="ion-no-border">
-  <ion-row>
-    <ion-col size="12">
-      <ion-button expand="block"
-      (click)="forzarEscaneo()" 
-      color="medium">Iniciar Escaneo</ion-button>
-    </ion-col>
-
-
-  </ion-row>
-
-  <ion-row>
-    <ion-col size="12">
-      <ion-button expand="block"
-      (click)="quieroEnviar(true)" 
-      color="warning">
-      <!-- <ion-text color="primary"> -->
-        Finalizar Sin Patente
-        <ion-spinner *ngIf="enviandoConPatente"></ion-spinner>
-      <!-- </ion-text> -->
-    </ion-button>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col size="12">
-      <ion-button expand="block"
-      (click)="quieroEnviar(false)" 
-      color="success">
-      <!-- <ion-text color="primary"> -->
-        Finalizar Proceso
-        <ion-spinner *ngIf="enviandoSinPatente"></ion-spinner>
-      <!-- </ion-text> -->
-    </ion-button>
-    </ion-col>
-  </ion-row>
-</ion-footer>

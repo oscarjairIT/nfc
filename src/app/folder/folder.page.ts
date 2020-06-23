@@ -31,12 +31,14 @@ export class FolderPage implements OnInit {
   NFCREAD: any;
   public folder: string;
   patente = '';
-  enviandoSinPatente = false;
-  enviandoConPatente = false;
+
   sinPersonal = true;
 
-  /*Data a enviar */
-  tripulacion: Tripulacion = new Tripulacion();
+  enviarPatente = false;
+  noDecideComoEnviar = true;
+  personalNoCargado = true;
+
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -48,123 +50,59 @@ export class FolderPage implements OnInit {
     private apiLoomis: ApiLoomisService,
     private alertController: AlertController
     ) {
-      this.tripulacion.tripulacion = [];
+      
+      
     }
 
   ionViewWillEnter() {
-    this.getPersonalToLocal();
+    this.enviarPatente = false;
+    this.noDecideComoEnviar = true;
+    this.personalNoCargado = true;
+    this.getPersonal();
     
-    this.dataLocalService.isLogged().then(
-      resp => {
-        console.log(resp);
-        if(resp == false){
-          this.router.navigate(['/login']);
-        }
-      },
-      err=>{
-        console.log(err);  
-        this.alertService.presentToast(err);
-      }
-    );
+    // this.dataLocalService.isLogged().then(
+    //   resp => {
+    //     console.log(resp);
+    //     if(resp == false){
+    //       this.router.navigate(['/login']);
+    //     }
+    //   },
+    //   err=>{
+    //     console.log(err);  
+    //     this.alertService.presentToast(err);
+    //   }
+    // );
     
   }
 
   ngOnInit() {
+    this.enviarPatente = false;
+    this.noDecideComoEnviar = true;
+    this.personalNoCargado = true;
+
+    if(this.personalNoCargado){
+      this.getPersonal();
+    }
     // this.getPersonalToLocal();
-    this.listeningNFC();
+    // this.listeningNFC();
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.toogleDarkMode();
     // this.patente = '';
   }
 
-  getPersonalToLocal(){
-    this.alertService.presentToast("Cargando Personal");
-    console.log("Cargando Personal");
-    
-    this.apiLoomis.getPersonal().then(
-      resp =>{
-        this.dataLocalService.savePersonalInicial(resp).then(
-          ok=>{
-            console.log("Request de servicio inicial de carga de personal: ",resp);
-            // let respParsed = JSON.parse(resp.data);
-            // for asignando resp a listaCargada
-            resp.forEach(element => {
-              // console.log(element.nfc);
-
-              this.listaCargada.push({id_persona: element.id_persona, 
-                                    id_tarjeta: element.id_tarjeta, 
-                                      nombre: element.nombre});
-            });
-            this.sinPersonal = false;
-            this.alertService.presentToast("Carga de Personal Exitosa")
-          }
-        );
-      },
-      err =>{
-        console.log(err);
+  goToReadNfc(){    
+    if(this.personalNoCargado){
+      this.getPersonal();
+    }
+    // this.service.getGet();
+    // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        patente: this.patente,
+        personal: JSON.stringify(this.listaCargada)
       }
-    );
-  }
-
-  // goToReadNfc(){    
-  //   // this.service.getGet();
-  //   // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
-  //   let navigationExtras: NavigationExtras = {
-  //     queryParams: {
-  //       patente: this.patente
-  //     }
-  //   };
-  //   this.router.navigate(['/read-nfc'], navigationExtras);
-  // }
-
-  async quieroEnviar(conPatente: boolean) {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Confirmar',
-      // subHeader: 'Subtitle',
-      message: '¿Está seguro de enviar esta tripulación?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
-          }
-        },
-        {
-          text: 'Si',
-          handler: () => {
-            console.log('Confirm Okay');
-            if(conPatente){
-              this.enviandoConPatente = true;
-              this.enviandoSinPatente = false;
-            } else {
-              this.enviandoSinPatente = true;
-              this.enviandoConPatente = false;
-            }
-            this.sendingTripulacion().then(
-              resp=> {
-                console.log(resp);
-
-                /*Vaciando lista de envio y otras listas*/
-                this.tripulacion.tripulacion = [];
-                this.tripulacion.patente = '';
-                this.listNFCs = [];
-                this.patente = '';
-                if(conPatente){
-                  this.enviandoConPatente = false;
-                } else {
-                  this.enviandoSinPatente = false;
-                }
-              }
-            );
-          }
-        }
-      ]
-    });
-
-    await alert.present();
+    };
+    this.router.navigate(['/read-nfc'], navigationExtras);
   }
 
   patenteOnChange(e){
@@ -172,155 +110,46 @@ export class FolderPage implements OnInit {
     this.patente = e.detail.value;
   }
 
+  usarPatente(){
+    if(this.personalNoCargado){
+      this.getPersonal();
+    }
+    this.enviarPatente = true;
+    this.noDecideComoEnviar = false;
+  }
+
+  // guardarPatente(){
+  //   this.dataLocalService.
+  // }
+
   toogleDarkMode(){
     this.themeService.toogleAppTheme();
   }
 
-  deleteItem(item) {
-    let index = this.listNFCs.indexOf(item);
-
-    if(index > -1){
-      this.listNFCs.splice(index, 1);
-    }
-  }
-
-  forzarEscaneo(){
-    // this.getPersonalToLocal();
-    this.alertService.presentToast("Iniciando Escaneo");
-    this.listeningNFC();
-  }
-
-  listeningNFC(){
-    
-    console.log("listening ..");
-    let code;
-    this.nfc.addTagDiscoveredListener().subscribe(event => {
-      console.log('HEXA: ', this.nfc.bytesToHexString(event.tag.id));
-      let uno = this.nfc.bytesToHexString(event.tag.id)
-      console.log("hexa dec ",parseInt(uno, 16));
-      let dos = event.tag.id.reverse()
-      console.log("hex invert: ",this.nfc.bytesToHexString(dos))
-      console.log("Decimal invers: ",parseInt(this.nfc.bytesToHexString(dos), 16))
-      // this.nfc.
-      code = parseInt(this.nfc.bytesToHexString(dos), 16);
-      
-      /*Comparando nfc leido con lista de personal autorizado*/
-      this.comparingNfcListCurrentNfc(code).then(
-        resp => {
-          console.log("respuesta de comparacion: ", resp);
-          /*Agregando a la Lista */
-          this.listNFCs.push(resp);
-        },
-        err => {
-          console.log(err);
-          this.alertService.presentToast("Error leyendo personal");
-        }
-      );
-      
-    });
-  }
-
-  /**
-   * Compara el NFC leido con la lista de personal cargada inicialmente
-   */
-  async comparingNfcListCurrentNfc(nfc_code: string):Promise<any>{
-    this.noCoincide = true;
-    return new Promise( (resolve) => {
-      let index = 0;
-      // console.log(this.listaCargada.length);
-      // console.log("Lista Cargada: ", this.listaCargada);
-      
-      this.listaCargada.forEach(persona => {
-        index ++;
-        if(persona.id_tarjeta == nfc_code){
-          this.noCoincide = false;
-          console.log("Autorizado");          
-          this.alertService.presentToast("Autorizado");
-          resolve(persona);
-        }
-        if(index >= this.listaCargada.length && this.noCoincide){
-          console.log("No Autorizado");  
-          this.alertService.presentToast("No Autorizado");
-        }
-      });
-
-      console.log("en comparing");
-      
-    });
-  }
-
-  /**
-   *  Envia tripulacion
-   */
-  async sendingTripulacion():Promise<any>{
-    return new Promise( (resolve) => {
-      this.createTripulacion().then(
-        tripulacion=>{
-          // console.log("tripulacion antes de enviarse: ", tripulacion);
-          console.log("patente de variable: ", this.tripulacion.patente);
-          console.log("tripulacion de variable: ", this.tripulacion.tripulacion);
+  getPersonal(){
+    this.apiLoomis.getPersonal().then(
+      resp =>{
+        this.dataLocalService.savePersonalInicial(resp);
+        this.listaCargada = [];
+        this.personalNoCargado = false;
+        console.log("Request de servicio inicial de carga de personal: ",resp);
+        // let respParsed = JSON.parse(resp.data);
+        // for asignando resp a listaCargada
+        resp.forEach(element => {
+          // console.log(element.nfc);
           
-          this.apiLoomis.sendTripulacion(this.tripulacion.patente , this.tripulacion.tripulacion).then(
-            resp=>{
-              console.log("Tripulacion Enviada Correctamente");
-              console.log(resp);
-              this.alertService.presentToast("Enviado Correctamente");
-              resolve(resp);
-            },
-            err=>{
-              console.log(err);
-            }
-          );
-        },
-        err=>{
-          console.log(err);
-        }
-      );
-    });
-  }
-
-  /**
-   * Crea Objeto Tripulacion
-   */
-  async createTripulacion():Promise<any>{
-    console.log("Lista Inical Cargada es: ", this.listaCargada);
-    console.log("Lista Autorizados: ", this.listNFCs);
-    
-    console.log("Lista para enviar antes de ser cargada: ", this.tripulacion);
-    // this.tripulacion.tripulacion.push()
-    return new Promise( (resolve) => {
-      this.patente = this.patente.toUpperCase();
-      this.tripulacion.patente = this.patente;
-      let index;
-      for (index = 0; index < this.listNFCs.length; index++) {
-        const element =  this.listNFCs[index];
-        console.log("Leyendo: ", element);
-        
-        this.tripulacion.tripulacion.push({
-          id_persona: element.id_persona,
-          nombre_persona: element.nombre
+          this.listaCargada.push({id_persona: element.id_persona, 
+                                id_tarjeta: element.id_tarjeta, 
+                                  nombre: element.nombre});
         });
-        console.log("Uno mas: ", this.tripulacion.tripulacion);
-        
+      },
+      err => {
+        console.log("Error al obtener personal ",err);
+        this.alertService.presentToast("Error al Cargar el personal");
       }
-      
-      if(index >=  this.listNFCs.length){
-        // console.log("ajuera",this.tripulacion);
-        console.log("Lista para enviar luego de ser cargada: ", this.tripulacion);
-        
-        resolve(this.tripulacion);
-      }
-
-      // this.listaCargada.forEach(element => {
-
-      //   this.tripulacion.tripulacion.push({
-      //     id_persona: element.id_persona,
-      //     nombre_persona: element.nombre_persona,
-      //     apellido_persona: element.apellido_persona
-      //   });
-
-      // });
-    });
+    );
   }
+
+
 
 }
