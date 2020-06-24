@@ -223,29 +223,49 @@ export class ReadNfcPage implements OnInit, OnDestroy {
       console.log("Code: ", code);
 
       // this.comparing(code)
-      
+      let encontrado = false;
+      let index = 0
+      for (index; index < this.listaCargada.length; index++) {
+        const persona = this.listaCargada[index];
+
+        // console.log("comparando: ", persona.id_tarjeta + " con " + " code recibido " + code);
+        
+        
+        if(persona.id_tarjeta == code){
+          encontrado = true;
+          console.log("Tarjeta Correcta: ", persona.id_tarjeta);
+          this.alertService.presentToast("Tarjeta Correcta: " + persona.id_tarjeta);
+
+          this.listNFCs.push(persona);
+        }
+      }
+
+      if(index >= this.listaCargada.length && encontrado == false){
+        console.log("Tarjeta Incorrecta: ", code);
+        this.alertService.presentToast("Tarjeta Incorrecta: " + code);
+      }
       
       /*Comparando nfc leido con lista de personal autorizado*/
-      this.comparingNfcListCurrentNfc(code).then(
-        resp => {
-          console.log("respuesta de comparacion: ", resp);
-          if(resp == 'vacio'){
-            console.log("vacio");
-            console.log("No Autorizado");  
-            this.alertService.presentToast("No Autorizado");
-          } else {
-            /*Agregando a la Lista */
-            this.listNFCs.push(resp);
-            console.log("Actualiza lista NFC: ",this.listNFCs);
+      // this.comparingNfcListCurrentNfc(code).then(
+      //   resp => {
+      //     console.log("respuesta de comparacion: ", resp);
+      //     if(resp == 'vacio'){
+      //       console.log("vacio");
+      //       console.log("No Autorizado");  
+      //       this.alertService.presentToast("No Autorizado");
+      //     } else {
+      //       /*Agregando a la Lista */
+      //       this.listNFCs.push(resp);
+      //       console.log("Actualiza lista NFC: ",this.listNFCs);
 
-          }
+      //     }
           
-        },
-        err => {
-          console.log(err);
-          this.alertService.presentToast("Error leyendo personal");
-        }
-      );
+      //   },
+      //   err => {
+      //     console.log(err);
+      //     this.alertService.presentToast("Error leyendo personal");
+      //   }
+      // );
       
     });
   }
@@ -270,14 +290,16 @@ export class ReadNfcPage implements OnInit, OnDestroy {
         
         if(persona.id_tarjeta == nfc_code){
           this.noCoincide = false;
-          console.log("Autorizado");          
-          this.alertService.presentToast("Autorizado");
+          console.log("Tarjeta Correcta");          
+          this.alertService.presentToast("Tarjeta Correcta");
           resolve(persona);
           return;
         }
         if(index >= this.listaCargada.length && this.noCoincide){
-          console.log("No Autorizado");  
-          this.alertService.presentToast("No Autorizado");
+          console.log("Tarjeta Incorrecta: ", persona.id_tarjeta);  
+          console.log("codigo recivido: ", nfc_code);
+          
+          this.alertService.presentToast("Tarjeta Incorrecta: " + persona.id_tarjeta);
         }
       });
       index = 0;
