@@ -284,7 +284,7 @@ export class ReadNfcPage implements OnInit, OnDestroy {
       this.noCoincide = true;
       console.log("en comparing");
 
-      reject('vacio');
+      resolve('vacio');
       return;
     });
   }

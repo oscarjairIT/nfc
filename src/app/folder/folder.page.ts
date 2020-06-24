@@ -60,18 +60,18 @@ export class FolderPage implements OnInit {
     this.personalNoCargado = true;
     this.getPersonal();
     
-    // this.dataLocalService.isLogged().then(
-    //   resp => {
-    //     console.log(resp);
-    //     if(resp == false){
-    //       this.router.navigate(['/login']);
-    //     }
-    //   },
-    //   err=>{
-    //     console.log(err);  
-    //     this.alertService.presentToast(err);
-    //   }
-    // );
+    this.dataLocalService.isLogged().then(
+      resp => {
+        console.log(resp);
+        if(resp == false){
+          this.router.navigate(['/login']);
+        }
+      },
+      err=>{
+        console.log(err);  
+        this.alertService.presentToast(err);
+      }
+    );
     
   }
 
@@ -116,6 +116,11 @@ export class FolderPage implements OnInit {
     }
     this.enviarPatente = true;
     this.noDecideComoEnviar = false;
+  }
+
+  cancelar(){
+    this.enviarPatente = false;
+    this.noDecideComoEnviar = true;
   }
 
   // guardarPatente(){

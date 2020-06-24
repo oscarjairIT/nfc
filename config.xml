@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.loomis.cuarentena31" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Cuarentena 3.1</name>
+<widget id="io.loomis.cuarentena32" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Cuarentena 3.2</name>
     <description>Dhemax APP.</description>
     <author email="oacevedo@dhemax.cl" href="http://dhemax.cl/">Dhemax Ingenieros SpA</author>
     <content src="index.html" />

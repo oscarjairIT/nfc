@@ -105,6 +105,19 @@
     </ion-col>
     <ion-col size="2"></ion-col>
   </ion-row>
+  <br>
+  <ion-row *ngIf="enviarPatente">
+    <ion-col size="2"></ion-col>
+    <ion-col size="8">
+      <ion-button expand="block"
+      (click)="cancelar()" 
+      color="medium"
+      class="ion-text-center">
+        Cancelar
+    </ion-button>
+    </ion-col>
+    <ion-col size="2"></ion-col>
+  </ion-row>
 
 </ion-content>
 

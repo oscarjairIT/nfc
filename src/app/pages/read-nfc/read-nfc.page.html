@@ -23,7 +23,7 @@
 
         <ion-button expand="block"
           (click)="forzarEscaneo()" 
-          color="medium"
+          color="danger"
           class="ion-text-center">
           <ion-icon name="radio-outline"></ion-icon>
            FORZAR ESCANEO
@@ -59,18 +59,7 @@
 
 <ion-footer *ngIf="noQuieroEnviar">
 
-  <ion-row>
-    <ion-col size="1"></ion-col>
-    <ion-col  size="10">
-      <ion-button expand="block"
-        (click)="cancelarProceso()" 
-        color="danger"
-        class="ion-text-center">
-        CANCELAR PROCESO
-      </ion-button>
-    </ion-col>
-    <ion-col  size="1"></ion-col>
-  </ion-row>
+
 
   <br>
 
@@ -82,6 +71,20 @@
         color="success"
         class="ion-text-center">
         FINALIZAR PROCESO
+      </ion-button>
+    </ion-col>
+    <ion-col  size="1"></ion-col>
+  </ion-row>
+  <br>
+
+  <ion-row>
+    <ion-col size="1"></ion-col>
+    <ion-col  size="10">
+      <ion-button expand="block"
+        (click)="cancelarProceso()" 
+        color="medium"
+        class="ion-text-center">
+        CANCELAR PROCESO
       </ion-button>
     </ion-col>
     <ion-col  size="1"></ion-col>
