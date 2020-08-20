@@ -75,7 +75,7 @@ export class ReadNfcPage implements OnInit, OnDestroy {
         // }
       }
       // console.log("constructor ",this.patente);
-      this.listaCargada.push({id_persona: "TEST id persona", id_tarjeta: "3253082088", nombre:"PERSONA TEST"});
+      this.listaCargada.push({id_persona: "TEST id persona", id_tarjeta: "3893880513", nombre:"PERSONA TEST"});
       console.log("Lista Cargada en constructor ", this.listaCargada);
       
       
@@ -212,14 +212,37 @@ export class ReadNfcPage implements OnInit, OnDestroy {
     
     let code;
     this.subscripcion =  this.nfc.addTagDiscoveredListener().subscribe(event => {
-      console.log('HEXA: ', this.nfc.bytesToHexString(event.tag.id));
-      let uno = this.nfc.bytesToHexString(event.tag.id)
-      console.log("hexa dec ",parseInt(uno, 16));
-      let dos = event.tag.id.reverse()
-      console.log("hex invert: ",this.nfc.bytesToHexString(dos))
-      console.log("Decimal invers: ",parseInt(this.nfc.bytesToHexString(dos), 16))
-      // this.nfc.
-      code = parseInt(this.nfc.bytesToHexString(dos), 16);
+      // console.log('HEXA: ', this.nfc.bytesToHexString(event.tag.id));
+      // console.log("A cuero pelao: ", event.tag.id);
+      
+      let hexa = this.nfc.bytesToHexString(event.tag.id);
+      console.log("Hexa: ", hexa);
+      // console.log("Hexa test: ", "4d999652");
+      
+      const test_hex = "4d999652";
+      let hex_dec_1 =  parseInt(hexa, 16);
+      console.log("*********Hexa Dec1: ",hex_dec_1);
+
+      // let hex_dec_2 =  parseInt("4d999652", 16);
+      // console.log("Hexa Dec2: ",hex_dec_2);
+      
+      
+      // let uno = this.nfc.bytesToHexString(event.tag.id)
+      // console.log("hexa dec ",parseInt(uno, 16));
+      // let hexa_invert = this.reverse_a_number(hexa.toString()); //segundo intento
+      // console.log("Hexa Invertido: ", hexa_invert); //segundo intento
+      
+      // let dos = event.tag.id.reverse()
+      // console.log("hex invert: ",this.nfc.bytesToHexString(dos))
+      // let hexa_invert_dec = parseInt(hexa_invert, 16);
+      // console.log("invertido a Decimal: ", hexa_invert_dec);
+
+      // let code = hexa_invert_dec; //segundo intento
+
+      let code = hex_dec_1;
+      
+      // console.log("Decimal invers: ",parseInt(this.nfc.bytesToHexString(dos), 16))
+      // code = parseInt(this.nfc.bytesToHexString(dos), 16);
       console.log("Code: ", code);
 
       // this.comparing(code)
@@ -231,7 +254,7 @@ export class ReadNfcPage implements OnInit, OnDestroy {
         // console.log("comparando: ", persona.id_tarjeta + " con " + " code recibido " + code);
         
         
-        if(persona.id_tarjeta == code){
+        if(persona.id_tarjeta == code.toString()){
           encontrado = true;
           console.log("Tarjeta Correcta: ", persona.id_tarjeta);
           this.alertService.presentToast("Tarjeta Correcta: " + persona.id_tarjeta);
@@ -387,5 +410,10 @@ export class ReadNfcPage implements OnInit, OnDestroy {
     });
   }
 
+  reverse_a_number(n)
+  {
+    n = n + "";
+    return n.split("").reverse().join("");
+  }
 
 }
