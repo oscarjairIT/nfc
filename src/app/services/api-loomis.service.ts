@@ -37,10 +37,11 @@ export class ApiLoomisService {
    */
   async getPersonal():Promise<any>{
     return new Promise( (resolve) => {
+      this.http.setServerTrustMode("nocheck");
       this.http.setDataSerializer("raw");
       this.http.setRequestTimeout(5);
       this.http.get(
-        "http://api.loomischile.cl/api/tripulantes/personal/",
+        "https://api.loomischile.cl/api/tripulantes/personal/",
         {},
         {}
       ).then(
@@ -82,6 +83,7 @@ export class ApiLoomisService {
     console.log("a enviar: ", user + " "+ key);
     
     return new Promise( (resolve) => {
+      this.http.setServerTrustMode("nocheck");
       this.http.setRequestTimeout(3);
       this.http.setDataSerializer('json');
       this.http.post(
@@ -134,6 +136,7 @@ export class ApiLoomisService {
     
     return new Promise( (resolve) => {
       // resolve("Enviado a la api");
+      this.http.setServerTrustMode("nocheck");
       this.http.setRequestTimeout(5.0); //seconds
       this.http.setDataSerializer('json');
       this.http.post(
