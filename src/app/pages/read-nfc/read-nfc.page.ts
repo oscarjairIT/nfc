@@ -74,11 +74,8 @@ export class ReadNfcPage implements OnInit, OnDestroy {
           )
         // }
       }
-      // console.log("constructor ",this.patente);
-      this.listaCargada.push({id_persona: "TEST id persona", id_tarjeta: "3893880513", nombre:"PERSONA TEST"});
+      this.listaCargada.push({id_persona: "TEST id persona", id_tarjeta: "3893880513", nombre:"PERSONA TEST"}); //para pruebas
       console.log("Lista Cargada en constructor ", this.listaCargada);
-      
-      
     });
 
     
@@ -168,26 +165,6 @@ export class ReadNfcPage implements OnInit, OnDestroy {
     this.noQuieroEnviar = true;
   }
 
-
-  // async presentPopover(ev: any) {
-  //   const popover = await this.popoverController.create({
-  //     component: PopoverComponent,
-  //     cssClass: 'my-custom-class',
-  //     event: ev,
-  //     translucent: true
-  //   });
-  //   return await popover.present();
-  // }
-
-  // async presentModal() {
-  //   const modal = await this.modalController.create({
-  //     component: ModalPage,
-  //     cssClass: 'my-custom-class'
-  //   });
-  //   return await modal.present();
-  // }
-
-
   deleteItem(item) {
     let index = this.listNFCs.indexOf(item);
 
@@ -197,7 +174,6 @@ export class ReadNfcPage implements OnInit, OnDestroy {
   }
 
   forzarEscaneo(){
-    // this.getPersonalToLocal();
     this.alertService.presentToast("Iniciando Escaneo");
     this.listeningNFC();
   }
@@ -212,8 +188,6 @@ export class ReadNfcPage implements OnInit, OnDestroy {
     
     let code;
     this.subscripcion =  this.nfc.addTagDiscoveredListener().subscribe(event => {
-      // console.log('HEXA: ', this.nfc.bytesToHexString(event.tag.id));
-      // console.log("A cuero pelao: ", event.tag.id);
       
       let hexa = this.nfc.bytesToHexString(event.tag.id);
       console.log("Hexa: ", hexa);
@@ -223,36 +197,14 @@ export class ReadNfcPage implements OnInit, OnDestroy {
       let hex_dec_1 =  parseInt(hexa, 16);
       console.log("*********Hexa Dec1: ",hex_dec_1);
 
-      // let hex_dec_2 =  parseInt("4d999652", 16);
-      // console.log("Hexa Dec2: ",hex_dec_2);
-      
-      
-      // let uno = this.nfc.bytesToHexString(event.tag.id)
-      // console.log("hexa dec ",parseInt(uno, 16));
-      // let hexa_invert = this.reverse_a_number(hexa.toString()); //segundo intento
-      // console.log("Hexa Invertido: ", hexa_invert); //segundo intento
-      
-      // let dos = event.tag.id.reverse()
-      // console.log("hex invert: ",this.nfc.bytesToHexString(dos))
-      // let hexa_invert_dec = parseInt(hexa_invert, 16);
-      // console.log("invertido a Decimal: ", hexa_invert_dec);
-
-      // let code = hexa_invert_dec; //segundo intento
-
       let code = hex_dec_1;
-      
-      // console.log("Decimal invers: ",parseInt(this.nfc.bytesToHexString(dos), 16))
-      // code = parseInt(this.nfc.bytesToHexString(dos), 16);
+
       console.log("Code: ", code);
 
-      // this.comparing(code)
       let encontrado = false;
       let index = 0
       for (index; index < this.listaCargada.length; index++) {
         const persona = this.listaCargada[index];
-
-        // console.log("comparando: ", persona.id_tarjeta + " con " + " code recibido " + code);
-        
         
         if(persona.id_tarjeta == code.toString()){
           encontrado = true;
@@ -266,29 +218,7 @@ export class ReadNfcPage implements OnInit, OnDestroy {
       if(index >= this.listaCargada.length && encontrado == false){
         console.log("Tarjeta Incorrecta: ", code);
         this.alertService.presentToast("Tarjeta Incorrecta: " + code);
-      }
-      
-      /*Comparando nfc leido con lista de personal autorizado*/
-      // this.comparingNfcListCurrentNfc(code).then(
-      //   resp => {
-      //     console.log("respuesta de comparacion: ", resp);
-      //     if(resp == 'vacio'){
-      //       console.log("vacio");
-      //       console.log("No Autorizado");  
-      //       this.alertService.presentToast("No Autorizado");
-      //     } else {
-      //       /*Agregando a la Lista */
-      //       this.listNFCs.push(resp);
-      //       console.log("Actualiza lista NFC: ",this.listNFCs);
-
-      //     }
-          
-      //   },
-      //   err => {
-      //     console.log(err);
-      //     this.alertService.presentToast("Error leyendo personal");
-      //   }
-      // );
+      }      
       
     });
   }
@@ -300,17 +230,10 @@ export class ReadNfcPage implements OnInit, OnDestroy {
     this.noCoincide = true;
     return new Promise( (resolve, reject) => {
       let index = 0;
-      // console.log(this.listaCargada.length);
-      // console.log("Lista Cargada: ", this.listaCargada);
       
       this.listaCargada.forEach(persona => {
         index ++;
-        // console.log("Comparando: ");
-        
-        // console.log(persona.id_tarjeta);
-        // console.log(nfc_code);
-        
-        
+
         if(persona.id_tarjeta == nfc_code){
           this.noCoincide = false;
           console.log("Tarjeta Correcta");          
@@ -397,16 +320,6 @@ export class ReadNfcPage implements OnInit, OnDestroy {
         
         resolve(this.tripulacion);
       }
-
-      // this.listaCargada.forEach(element => {
-
-      //   this.tripulacion.tripulacion.push({
-      //     id_persona: element.id_persona,
-      //     nombre_persona: element.nombre_persona,
-      //     apellido_persona: element.apellido_persona
-      //   });
-
-      // });
     });
   }
 

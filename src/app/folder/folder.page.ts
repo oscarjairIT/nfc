@@ -83,19 +83,14 @@ export class FolderPage implements OnInit {
     if(this.personalNoCargado){
       this.getPersonal();
     }
-    // this.getPersonalToLocal();
-    // this.listeningNFC();
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.toogleDarkMode();
-    // this.patente = '';
   }
 
   goToReadNfc(){    
     if(this.personalNoCargado){
       this.getPersonal();
     }
-    // this.service.getGet();
-    // this.authService.login("oacevedo@dhemax.cl", "dhemax1234");
     let navigationExtras: NavigationExtras = {
       queryParams: {
         patente: this.patente,
@@ -123,10 +118,6 @@ export class FolderPage implements OnInit {
     this.noDecideComoEnviar = true;
   }
 
-  // guardarPatente(){
-  //   this.dataLocalService.
-  // }
-
   toogleDarkMode(){
     this.themeService.toogleAppTheme();
   }
@@ -138,8 +129,6 @@ export class FolderPage implements OnInit {
         this.listaCargada = [];
         this.personalNoCargado = false;
         console.log("Request de servicio inicial de carga de personal: ",resp);
-        // let respParsed = JSON.parse(resp.data);
-        // for asignando resp a listaCargada
         resp.forEach(element => {
           // console.log(element.nfc);
           

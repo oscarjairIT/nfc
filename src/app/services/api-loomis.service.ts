@@ -70,7 +70,6 @@ export class ApiLoomisService {
     });
   }
 
-  // SIN PROBAR
   /**
    * GET: https://api.loomischile.cl/tripulantes/inicio/
    * Panel para accesar al software
@@ -88,21 +87,11 @@ export class ApiLoomisService {
       this.http.setDataSerializer('json');
       this.http.post(
         this.sharedService.API_LOOMIS + "inicio/",
-        // "{usuario: "+ user + ", clave: "+ key +"}",
         {usuario: user, clave: key},
-
-        // { method: 'post'}
-        // {'Content-Type': 'application/json'}
-        // {}
-        // {'Content-Type':'text/plain'}
-        // {'Content-Type':'application/x-www-form-urlencoded'}
         {}
       ).then(
         resp => {
           console.log(resp);
-          // console.log(resp.data);
-
-          // console.log(resp.data.respuesta);
           let respParsed = JSON.parse(resp.data);
           console.log(respParsed.respuesta);
           resolve(respParsed.respuesta);
@@ -115,7 +104,6 @@ export class ApiLoomisService {
     });
   }
 
-  // SIN PROBAR
   /**
    * POST: https://api.loomischile.cl/tripulantes/vehiculo/
    * registro de tripulación
@@ -128,9 +116,7 @@ export class ApiLoomisService {
    * Informa si usuario esta autorizado o no
    */
   async sendTripulacion(patente: string, tripulacion: PersonalParaEnvio[]):Promise<any>{
-    // console.log("*****a enviar: ",tripulacion);
     let tiempo1 = new Date();
-    // console.log("envia en: ",tiempo1);
     
     console.log("*****a enviar: ",{patente: patente, tripulacion: tripulacion});
     
@@ -146,7 +132,6 @@ export class ApiLoomisService {
       ).then(
         resp => {
           let tiempo2 = new Date();
-          // console.log("responde en: ", tiempo2);
           let  difference = (tiempo2.getTime() - tiempo1.getTime()) / 1000;
           console.log("Demora: ", difference);
           
@@ -156,7 +141,6 @@ export class ApiLoomisService {
         err => {
           this.alertService.presentToast("Error al enviar, Intente nuevamente");
           console.log(err);
-          // resolve(err); //para testing
         }
       )
     });
